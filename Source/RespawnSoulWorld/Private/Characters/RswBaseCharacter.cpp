@@ -7,28 +7,12 @@
 ARswBaseCharacter::ARswBaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-}
 
-// Called when the game starts or when spawned
-void ARswBaseCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
+    PrimaryActorTick.bStartWithTickEnabled = false;
 
-// Called every frame
-void ARswBaseCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void ARswBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+    GetMesh()->bReceivesDecals = false;
 
 }
 
