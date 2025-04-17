@@ -8,7 +8,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "DataAsset/Input/DataAsset_InputConfig.h"
 #include "Components/Input/RwsEnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "RswGameplayTags.h"
+
 
 #include "RswDebugHelper.h"
 
@@ -22,6 +24,7 @@ ARswHeroCharacter::ARswHeroCharacter()
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
+	
 	CameraBoom->TargetArmLength = 200.f;
 	CameraBoom->SocketOffset = FVector(0.f, 55.f, 65.f);
 	// Boom会跟着controller转动，移动鼠标，boom就会移动
@@ -31,6 +34,13 @@ ARswHeroCharacter::ARswHeroCharacter()
 	FollowCamera->SetupAttachment(CameraBoom);
 	// camera是附属的，所以camera跟着conroller转动，移动鼠标，照相机的位置就会改变
 	FollowCamera->bUsePawnControlRotation = false;
+
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
+	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+	// 这里决定了你的角色是否根据速度方向来转向
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 }
 
