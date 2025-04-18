@@ -2,6 +2,8 @@
 
 
 #include "Characters/RswBaseCharacter.h"
+#include "AbilitySystem/RswAbilitySystemComponent.h"
+#include "AbilitySystem/RswAttributeSet.h"
 
 // Sets default values
 ARswBaseCharacter::ARswBaseCharacter()
@@ -14,5 +16,22 @@ ARswBaseCharacter::ARswBaseCharacter()
 
     GetMesh()->bReceivesDecals = false;
 
+    RswAbilitySystemComponent = CreateDefaultSubobject<URswAbilitySystemComponent>(TEXT("RswAbilitySystemComponent"));
+    RswAttributeSet = CreateDefaultSubobject<URswAttributeSet>(TEXT("RswAttributeSet"));
+
+}
+
+UAbilitySystemComponent* ARswBaseCharacter::GetAbilitySystemComponent() const
+{
+    return GetRswAbilitySystemComponent();
+}
+
+void ARswBaseCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+    if (RswAbilitySystemComponent)
+    {
+        RswAbilitySystemComponent->InitAbilityActorInfo(this, this);
+    }
 }
 

@@ -10,6 +10,7 @@
 #include "Components/Input/RwsEnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "RswGameplayTags.h"
+#include "AbilitySystem/RswAbilitySystemComponent.h"
 
 
 #include "RswDebugHelper.h"
@@ -42,6 +43,19 @@ ARswHeroCharacter::ARswHeroCharacter()
 	// 这里决定了你的角色是否根据速度方向来转向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+}
+
+void ARswHeroCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (RswAbilitySystemComponent && RswAttributeSet)
+	{
+		const FString ASCText = FString::Printf(TEXT("Owner Actor: %s, AvatarActor: %s"), *RswAbilitySystemComponent->GetOwnerActor()->GetActorLabel(), *RswAbilitySystemComponent->GetAvatarActor()->GetActorLabel());
+
+		Debug::Print(TEXT("Ability system component valid. ") + ASCText, FColor::Green);
+		Debug::Print(TEXT("AttributeSet valid. ") + ASCText, FColor::Green);
+	}
 }
 
 void ARswHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

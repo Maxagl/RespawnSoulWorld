@@ -9,7 +9,8 @@ public class RespawnSoulWorld : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-        "GameplayTags"});
+        "GameplayTags",
+		"GameplayTasks"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
