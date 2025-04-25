@@ -9,6 +9,7 @@
 
 class URswAbilitySystemComponent;
 class URswAttributeSet;
+class UDataAsset_StartUpDataBase;
 UCLASS()
 class RESPAWNSOULWORLD_API ARswBaseCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -32,6 +33,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	URswAttributeSet* RswAttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
+	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
 
 public:
 	FORCEINLINE URswAbilitySystemComponent* GetRswAbilitySystemComponent() const { return RswAbilitySystemComponent; }
