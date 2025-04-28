@@ -3,12 +3,13 @@
 
 #include "AbilitySystem/Abilities/RswGameplayAbility.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
+#include "Components/Combat/PawnCombatComponent.h"
 
 void URswGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
     Super::OnGiveAbility(ActorInfo, Spec); 
 
-    if (AbilityActivationPolicy == EWarriorAbilityActivationPolicy::OnGiven)
+    if (AbilityActivationPolicy == ERswAbilityActivationPolicy::OnGiven)
     {
         if (ActorInfo && !Spec.IsActive())
         {
@@ -21,11 +22,21 @@ void URswGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, co
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-    if (AbilityActivationPolicy == EWarriorAbilityActivationPolicy::OnGiven)
+    if (AbilityActivationPolicy == ERswAbilityActivationPolicy::OnGiven)
     {
         if (ActorInfo)
         {
             ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
         }
     }
+}
+
+UPawnCombatComponent* URswGameplayAbility::GetPawnCombatComponentFromActorInfo() const
+{
+    return GetAvatarActorFromActorInfo()->FindComponentByClass<UPawnCombatComponent>();
+}
+
+URswAbilitySystemComponent* URswGameplayAbility::GetRswAbilitySystemComponentFromActorInfo() const
+{
+    return Cast<URswAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }

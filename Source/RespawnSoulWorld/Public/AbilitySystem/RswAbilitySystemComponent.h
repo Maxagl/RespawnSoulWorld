@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "RswTypes/RswStructTypes.h"
 #include "RswAbilitySystemComponent.generated.h"
 
 /**
@@ -13,5 +14,16 @@ UCLASS()
 class RESPAWNSOULWORLD_API URswAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
+public:
+    void OnAbilityInputPressed(const FGameplayTag& InInputTag);
+    void OnAbilityInputReleased(const FGameplayTag& InInputTag);
+
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Ability", meta = (ApplyLevel = "1"))
+    void GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
+
+
+    UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")
+    void RemovedGrantedHeroWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
+
 };

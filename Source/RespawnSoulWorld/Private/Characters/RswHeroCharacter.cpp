@@ -12,7 +12,7 @@
 #include "RswGameplayTags.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "DataAsset/StartUpData/DataAsset_HeroStartUpDataBase.h"
-
+#include "Components/Combat/HeroCombatComponent.h"
 
 #include "RswDebugHelper.h"
 
@@ -43,6 +43,9 @@ ARswHeroCharacter::ARswHeroCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 500.f;
 	// 这里决定了你的角色是否根据速度方向来转向
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
+
 
 }
 
@@ -79,6 +82,7 @@ void ARswHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RwsGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RwsGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	RswEnhancedInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void ARswHeroCharacter::BeginPlay()
@@ -120,4 +124,14 @@ void ARswHeroCharacter::Input_Look(const FInputActionValue& InputActionValue)
 	{
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ARswHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
+{
+	RswAbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void ARswHeroCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
+{
+	RswAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
 }

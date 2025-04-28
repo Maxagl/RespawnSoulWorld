@@ -6,9 +6,11 @@
 #include "Abilities/GameplayAbility.h"
 #include "RswGameplayAbility.generated.h"
 
+class UPawnCombatComponent;
+class URswAbilitySystemComponent;
 
 UENUM(BlueprintType)
-enum class EWarriorAbilityActivationPolicy : uint8
+enum class ERswAbilityActivationPolicy : uint8
 {
 	OnTriggered,
 	OnGiven
@@ -28,6 +30,12 @@ protected:
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
     //~ End UGameplayAbility Interface
 
-    UPROPERTY(EditDefaultsOnly, Category = "WarriorAbility")
-    EWarriorAbilityActivationPolicy AbilityActivationPolicy = EWarriorAbilityActivationPolicy::OnTriggered;
+    UPROPERTY(EditDefaultsOnly, Category = "RswAbility")
+    ERswAbilityActivationPolicy AbilityActivationPolicy = ERswAbilityActivationPolicy::OnTriggered;
+
+    UFUNCTION(BlueprintPure, Category = "Rsw|Ability")
+    UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
+
+    UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+    URswAbilitySystemComponent* GetRswAbilitySystemComponentFromActorInfo() const;
 };
