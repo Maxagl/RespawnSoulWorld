@@ -3,7 +3,7 @@
 
 #include "RswTypes/RswStructTypes.h"
 
-#include "AbilitySystem/Abilities/RswGameplayAbility.h"
+#include "AbilitySystem/Abilities/RswHeroGameplayAbility.h"
 
 bool FRswHeroAbilitySet::IsValid() const
 {
