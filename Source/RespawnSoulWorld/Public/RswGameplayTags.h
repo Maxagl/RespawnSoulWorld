@@ -24,4 +24,8 @@ namespace RwsGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Sword);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Sword);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
+
+    /** Enemy tags **/
+
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 }
