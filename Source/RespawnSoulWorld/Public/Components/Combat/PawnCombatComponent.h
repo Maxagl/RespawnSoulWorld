@@ -10,6 +10,14 @@
 
 class ARswWeaponBase;
 
+
+UENUM(BlueprintType)
+enum class EToggleDamageType : uint8
+{
+    CurrentEquippedWeapon,
+    LeftHand,
+    RightHand
+};
 /**
  * 
  */
@@ -29,6 +37,15 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     ARswWeaponBase* GetCharacterCurrentEquippedWeapon() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
+    void ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType = EToggleDamageType::CurrentEquippedWeapon);
+
+    virtual void OnHitTargetActor(AActor* HitActor);
+    virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor);
+
+protected:
+    TArray<AActor*> OverlappedActors;
 
 private:
     TMap<FGameplayTag, ARswWeaponBase*> CharacterCarriedWeaponMap;

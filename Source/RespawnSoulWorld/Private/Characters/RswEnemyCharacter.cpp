@@ -26,6 +26,11 @@ ARswEnemyCharacter::ARswEnemyCharacter()
     EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
 }
 
+UPawnCombatComponent* ARswEnemyCharacter::GetPawnCombatComponent() const
+{
+    return EnemyCombatComponent;
+}
+
 void ARswEnemyCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
@@ -49,7 +54,7 @@ void ARswEnemyCharacter::InitEnemyStartUpData()
                 {
                     LoadedData->GiveToAbilitySystemComponent(RswAbilitySystemComponent);
 
-                    Debug::Print(TEXT("Enemy Start Up Data Loaded"), FColor::Green);
+                    // Debug::Print(TEXT("Enemy Start Up Data Loaded"), FColor::Green);
                 }
             }
         )

@@ -4,16 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "RswTypes/RswEnumTypes.h"
 #include "RswFunctionLibrary.generated.h"
 
 
 class URswAbilitySystemComponent;
-UENUM()
-enum class ERswConfirmType : uint8
-{
-    Yes,
-    No
-};
+class UPawnCombatComponent;
+
 /**
  * 
  */
@@ -34,4 +31,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary", meta = (DisplayName = "Does Actor Have Tag", ExpandEnumAsExecs = "OutConfirmType"))
     static void BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, ERswConfirmType& OutConfirmType);
+
+    static UPawnCombatComponent* NativeGetPawnCombatComponentFromActor(AActor* InActor);
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutValidType"))
+    static UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor, ERswValidType& OutValidType);
 };

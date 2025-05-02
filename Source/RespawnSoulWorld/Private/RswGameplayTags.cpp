@@ -3,7 +3,7 @@
 
 #include "RswGameplayTags.h"
 
-namespace RwsGameplayTags
+namespace RswGameplayTags
 {
     /** Input Tags **/
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Move, "InputTag.Move");
@@ -29,4 +29,7 @@ namespace RwsGameplayTags
 
     /** Enemy tags **/
     UE_DEFINE_GAMEPLAY_TAG(Enemy_Weapon, "Enemy.Weapon");
+
+    /** Shared tags **/
+    UE_DEFINE_GAMEPLAY_TAG(Shared_Event_MeleeHit, "Shared.Event.MeleeHit");
 }

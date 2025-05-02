@@ -49,6 +49,11 @@ ARswHeroCharacter::ARswHeroCharacter()
 
 }
 
+UPawnCombatComponent* ARswHeroCharacter::GetPawnCombatComponent() const
+{
+	return HeroCombatComponent;
+}
+
 void ARswHeroCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -80,8 +85,8 @@ void ARswHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	URwsEnhancedInputComponent* RswEnhancedInputComponent = CastChecked<URwsEnhancedInputComponent>(PlayerInputComponent);
 
-	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RwsGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RwsGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	RswEnhancedInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 

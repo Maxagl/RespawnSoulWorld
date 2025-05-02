@@ -21,6 +21,11 @@ class RESPAWNSOULWORLD_API ARswHeroCharacter : public ARswBaseCharacter
 	GENERATED_BODY()
 public:
 	ARswHeroCharacter();
+
+	//~ Begin PawnCombatInterface Interface.
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+	//~ End PawnCombatInterface Interface
+
 protected:
 	// ~Begin Apawn Interface
 	virtual void PossessedBy(AController* NewController) override;

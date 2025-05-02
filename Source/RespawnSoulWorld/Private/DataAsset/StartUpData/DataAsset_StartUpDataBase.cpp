@@ -11,6 +11,23 @@ void UDataAsset_StartUpDataBase::GiveToAbilitySystemComponent(URswAbilitySystemC
 
     GrantAbilities(ActivateOnGivenAbilities, InASCToGive, ApplyLevel);
     GrantAbilities(ReactiveAbilities, InASCToGive, ApplyLevel);
+
+    if (!StartUpGameplayEffects.IsEmpty())
+    {
+        for (const TSubclassOf < UGameplayEffect >& EffectClass : StartUpGameplayEffects)
+        {
+            if (!EffectClass) continue;
+
+            UGameplayEffect* EffectCDO = EffectClass->GetDefaultObject<UGameplayEffect>();
+            // 谁拥有这个ASC，谁就拿这个效果，applytoself
+            InASCToGive->ApplyGameplayEffectToSelf(
+                EffectCDO,
+                ApplyLevel,
+                InASCToGive->MakeEffectContext()
+            );
+        }
+    }
+
 }
 
 void UDataAsset_StartUpDataBase::GrantAbilities(const TArray<TSubclassOf<URswGameplayAbility>>& InAbilitiesToGive, URswAbilitySystemComponent* InASCToGive, int32 ApplyLevel)

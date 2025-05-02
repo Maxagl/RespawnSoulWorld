@@ -3,7 +3,7 @@
 #pragma once
 #include "NativeGameplayTags.h"
 
-namespace RwsGameplayTags
+namespace RswGameplayTags
 {
     /** Input Tags **/
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
@@ -28,4 +28,7 @@ namespace RwsGameplayTags
     /** Enemy tags **/
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
+
+    /** Shared tags **/
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 }

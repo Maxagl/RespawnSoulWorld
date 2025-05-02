@@ -4,7 +4,7 @@
 #include "RswFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
-
+#include "Interfaces/PawnCombatInterface.h"
 
 URswAbilitySystemComponent* URswFunctionLibrary::NativeGetRswASCFromActor(AActor* InActor)
 {
@@ -43,4 +43,25 @@ bool URswFunctionLibrary::NativeDoesActorHaveTag(AActor* InActor, FGameplayTag T
 void URswFunctionLibrary::BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck, ERswConfirmType& OutConfirmType)
 {
 	OutConfirmType = NativeDoesActorHaveTag(InActor, TagToCheck) ? ERswConfirmType::Yes : ERswConfirmType::No;
+}
+
+UPawnCombatComponent* URswFunctionLibrary::NativeGetPawnCombatComponentFromActor(AActor* InActor)
+{
+	check(InActor);
+
+	if (IPawnCombatInterface* PawnCombatInterface = Cast<IPawnCombatInterface>(InActor))
+	{
+		return PawnCombatInterface->GetPawnCombatComponent();
+	}
+
+	return nullptr;
+}
+
+UPawnCombatComponent* URswFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor, ERswValidType& OutValidType)
+{
+	UPawnCombatComponent* CombatComponent = NativeGetPawnCombatComponentFromActor(InActor);
+
+	OutValidType = CombatComponent ? ERswValidType::Valid : ERswValidType::Invalid;
+
+	return CombatComponent;
 }

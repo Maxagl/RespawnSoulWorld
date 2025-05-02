@@ -18,6 +18,10 @@ class RESPAWNSOULWORLD_API ARswEnemyCharacter : public ARswBaseCharacter
 public:
     ARswEnemyCharacter();
 
+    //~ Begin PawnCombatInterface Interface.
+    virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+    //~ End PawnCombatInterface Interface
+
 protected:
     //~ Begin APawn Interface.
     virtual void PossessedBy(AController* NewController) override;

@@ -26,6 +26,11 @@ UAbilitySystemComponent* ARswBaseCharacter::GetAbilitySystemComponent() const
     return GetRswAbilitySystemComponent();
 }
 
+UPawnCombatComponent* ARswBaseCharacter::GetPawnCombatComponent() const
+{
+    return nullptr;
+}
+
 void ARswBaseCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
