@@ -4,6 +4,7 @@
 #include "AbilitySystem/Abilities/RswGameplayAbility.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 void URswGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -39,4 +40,25 @@ UPawnCombatComponent* URswGameplayAbility::GetPawnCombatComponentFromActorInfo()
 URswAbilitySystemComponent* URswGameplayAbility::GetRswAbilitySystemComponentFromActorInfo() const
 {
     return Cast<URswAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
+}
+
+FActiveGameplayEffectHandle URswGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle)
+{
+    UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+
+    check(TargetASC && InSpecHandle.IsValid());
+
+    return GetRswAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(
+        *InSpecHandle.Data,
+        TargetASC
+    );
+}
+
+FActiveGameplayEffectHandle URswGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, ERswSuccessType& OutSuccessType)
+{
+    FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(TargetActor, InSpecHandle);
+
+    OutSuccessType = ActiveGameplayEffectHandle.WasSuccessfullyApplied() ? ERswSuccessType::Successful : ERswSuccessType::Failed;
+
+    return ActiveGameplayEffectHandle;
 }

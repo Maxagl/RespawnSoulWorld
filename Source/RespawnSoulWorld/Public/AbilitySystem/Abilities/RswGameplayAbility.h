@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "RswTypes/RswEnumTypes.h"
 #include "RswGameplayAbility.generated.h"
 
 class UPawnCombatComponent;
@@ -36,6 +37,12 @@ protected:
     UFUNCTION(BlueprintPure, Category = "Rsw|Ability")
     UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 
-    UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+    UFUNCTION(BlueprintPure, Category = "Rsw|Ability")
     URswAbilitySystemComponent* GetRswAbilitySystemComponentFromActorInfo() const;
+
+    FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
+    FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, ERswSuccessType& OutSuccessType);
+
 };

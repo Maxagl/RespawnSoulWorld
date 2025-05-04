@@ -12,6 +12,16 @@ ARswHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag InW
     return Cast<ARswHeroWeapon>(GetCharacterCarriedWeaponByTag(InWeaponTag));
 }
 
+ARswHeroWeapon* UHeroCombatComponent::GetHeroCurrentEquippedWeapon() const
+{
+    return Cast<ARswHeroWeapon>(GetCharacterCurrentEquippedWeapon());
+}
+
+float UHeroCombatComponent::GetHeroCurrentEquippedWeaponDamageAtLevel(float InLevel) const
+{
+    return GetHeroCurrentEquippedWeapon()->HeroWeaponData.WeaponBaseDamage.GetValueAtLevel(InLevel);
+}
+
 void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
     if (OverlappedActors.Contains(HitActor))
@@ -30,9 +40,19 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
         RswGameplayTags::Shared_Event_MeleeHit,
         Data
     );
+
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+        GetOwningPawn(),
+        RswGameplayTags::Player_Event_HitPause,
+        FGameplayEventData()
+    );
 }
 
 void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
 {
-
+    //UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+    //    GetOwningPawn(),
+    //    RswGameplayTags::Player_Event_HitPause,
+    //    FGameplayEventData()
+    //);
 }

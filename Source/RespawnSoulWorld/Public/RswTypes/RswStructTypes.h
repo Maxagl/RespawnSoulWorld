@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 #include "RswStructTypes.generated.h"
 
 /**
@@ -39,4 +40,7 @@ struct FRswHeroWeaponData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
     TArray<FRswHeroAbilitySet> DefaultWeaponAbilities;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    FScalableFloat WeaponBaseDamage;
 };

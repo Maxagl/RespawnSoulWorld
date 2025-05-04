@@ -24,6 +24,8 @@ class RESPAWNSOULWORLD_API URswAttributeSet : public UAttributeSet
 public:
     URswAttributeSet();
 
+    virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
     UPROPERTY(BlueprintReadOnly, Category = "Health")
     FGameplayAttributeData CurrentHealth;
     ATTRIBUTE_ACCESSORS(URswAttributeSet, CurrentHealth)
@@ -47,4 +49,8 @@ public:
     UPROPERTY(BlueprintReadOnly, Category = "Damage")
     FGameplayAttributeData DefensePower;
     ATTRIBUTE_ACCESSORS(URswAttributeSet, DefensePower)
+
+    UPROPERTY(BlueprintReadOnly, Category = "Damage")
+    FGameplayAttributeData DamageTaken;
+    ATTRIBUTE_ACCESSORS(URswAttributeSet, DamageTaken)
 };
