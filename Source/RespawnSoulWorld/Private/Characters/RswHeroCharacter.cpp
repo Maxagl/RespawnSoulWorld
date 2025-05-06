@@ -13,6 +13,7 @@
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "DataAsset/StartUpData/DataAsset_HeroStartUpDataBase.h"
 #include "Components/Combat/HeroCombatComponent.h"
+#include "Components/UI/HeroUIComponent.h"
 
 #include "RswDebugHelper.h"
 
@@ -46,12 +47,24 @@ ARswHeroCharacter::ARswHeroCharacter()
 
 	HeroCombatComponent = CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
 
+	HeroUIComponent = CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
+
 
 }
 
 UPawnCombatComponent* ARswHeroCharacter::GetPawnCombatComponent() const
 {
 	return HeroCombatComponent;
+}
+
+UPawnUIComponent* ARswHeroCharacter::GetPawnUIComponent() const
+{
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* ARswHeroCharacter::GetHeroUIComponent() const
+{
+	return HeroUIComponent;
 }
 
 void ARswHeroCharacter::PossessedBy(AController* NewController)

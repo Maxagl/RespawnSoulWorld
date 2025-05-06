@@ -6,6 +6,9 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "Engine/AssetManager.h"
 #include "DataAsset/StartUpData/DataAsset_EnemyStartUpData.h"
+#include "Components/UI/EnemyUIComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/RswWidgetBase.h"
 
 #include "RswDebugHelper.h"
 
@@ -24,11 +27,35 @@ ARswEnemyCharacter::ARswEnemyCharacter()
     GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
     EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
+    EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>("EnemyUIComponent");
+
+    EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("EnemyHealthWidgetComponent");
+    EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
 }
 
 UPawnCombatComponent* ARswEnemyCharacter::GetPawnCombatComponent() const
 {
     return EnemyCombatComponent;
+}
+
+UPawnUIComponent* ARswEnemyCharacter::GetPawnUIComponent() const
+{
+    return EnemyUIComponent;
+}
+
+UEnemyUIComponent* ARswEnemyCharacter::GetEnemyUIComponent() const
+{
+    return EnemyUIComponent;
+}
+
+void ARswEnemyCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (URswWidgetBase* HealthWidget = Cast<URswWidgetBase>(EnemyHealthWidgetComponent->GetUserWidgetObject()))
+    {
+        HealthWidget->InitEnemyCreatedWidget(this);
+    }
 }
 
 void ARswEnemyCharacter::PossessedBy(AController* NewController)
