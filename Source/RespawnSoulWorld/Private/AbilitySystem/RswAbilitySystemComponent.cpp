@@ -2,7 +2,7 @@
 
 
 #include "AbilitySystem/RswAbilitySystemComponent.h"
-#include "AbilitySystem/Abilities/RswGameplayAbility.h"
+#include "AbilitySystem/Abilities/RswHeroGameplayAbility.h"
 
 void URswAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
@@ -60,4 +60,26 @@ void URswAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(ref)TA
     }
 
     InSpecHandlesToRemove.Empty();
+}
+
+bool URswAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate)
+{
+    check(AbilityTagToActivate.IsValid());
+
+    TArray<FGameplayAbilitySpec*> FoundAbilitySpecs;
+    GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(), FoundAbilitySpecs);
+
+    if (!FoundAbilitySpecs.IsEmpty())
+    {
+        const int32 RandomAbilityIndex = FMath::RandRange(0, FoundAbilitySpecs.Num() - 1);
+        FGameplayAbilitySpec* SpecToActivate = FoundAbilitySpecs[RandomAbilityIndex];
+
+        check(SpecToActivate);
+
+        if (!SpecToActivate->IsActive())
+        {
+            return TryActivateAbility(SpecToActivate->Handle);
+        }
+    }
+    return false;
 }

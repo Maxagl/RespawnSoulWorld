@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "GenericTeamAgentInterface.h"
 
 URswAbilitySystemComponent* URswFunctionLibrary::NativeGetRswASCFromActor(AActor* InActor)
 {
@@ -64,4 +65,19 @@ UPawnCombatComponent* URswFunctionLibrary::BP_GetPawnCombatComponentFromActor(AA
 	OutValidType = CombatComponent ? ERswValidType::Valid : ERswValidType::Invalid;
 
 	return CombatComponent;
+}
+
+bool URswFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+{
+	check(QueryPawn && TargetPawn);
+
+	IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController());
+	IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController());
+
+	if (QueryTeamAgent && TargetTeamAgent)
+	{
+		return QueryTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
+	}
+
+	return false;
 }

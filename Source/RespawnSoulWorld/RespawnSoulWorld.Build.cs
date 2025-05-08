@@ -11,7 +11,8 @@ public class RespawnSoulWorld : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
         "GameplayTags",
 		"GameplayTasks",
-        "UMG"});
+        "UMG",
+        "AnimGraphRuntime"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
