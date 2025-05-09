@@ -51,7 +51,6 @@ void ARswWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedCom
         if (URswFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
         {
             OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
-            OnWeaponHitTarget.ExecuteIfBound(OtherActor);
         }
     }
 }

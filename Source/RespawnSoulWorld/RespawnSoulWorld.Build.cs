@@ -12,7 +12,9 @@ public class RespawnSoulWorld : ModuleRules
         "GameplayTags",
 		"GameplayTasks",
         "UMG",
-        "AnimGraphRuntime"});
+        "AnimGraphRuntime",
+        "MotionWarping"
+        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

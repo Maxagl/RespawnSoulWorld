@@ -4,7 +4,7 @@
 #include "Characters/RswBaseCharacter.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "AbilitySystem/RswAttributeSet.h"
-
+#include "MotionWarpingComponent.h"
 // Sets default values
 ARswBaseCharacter::ARswBaseCharacter()
 {
@@ -18,6 +18,7 @@ ARswBaseCharacter::ARswBaseCharacter()
 
     RswAbilitySystemComponent = CreateDefaultSubobject<URswAbilitySystemComponent>(TEXT("RswAbilitySystemComponent"));
     RswAttributeSet = CreateDefaultSubobject<URswAttributeSet>(TEXT("RswAttributeSet"));
+    MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 
 }
 

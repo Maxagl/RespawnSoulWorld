@@ -12,6 +12,8 @@
 class URswAbilitySystemComponent;
 class URswAttributeSet;
 class UDataAsset_StartUpDataBase;
+class UMotionWarpingComponent;
+
 UCLASS()
 class RESPAWNSOULWORLD_API ARswBaseCharacter : public ACharacter, public IAbilitySystemInterface, public IPawnCombatInterface, public IPawnUIInterface
 {
@@ -44,6 +46,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	URswAttributeSet* RswAttributeSet;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotionWarping")
+	UMotionWarpingComponent* MotionWarpingComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
