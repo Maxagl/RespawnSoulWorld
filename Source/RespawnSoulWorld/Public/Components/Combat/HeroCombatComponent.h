@@ -16,13 +16,13 @@ class RESPAWNSOULWORLD_API UHeroCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
 public:
-    UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     ARswHeroWeapon* GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
 
-    UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     ARswHeroWeapon* GetHeroCurrentEquippedWeapon() const;
 
-    UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+    UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     float GetHeroCurrentEquippedWeaponDamageAtLevel(float InLevel) const;
 
     virtual void OnHitTargetActor(AActor* HitActor) override;

@@ -26,8 +26,9 @@ class RESPAWNSOULWORLD_API UPawnCombatComponent : public UPawnExtensionComponent
 {
 	GENERATED_BODY()
 public:
+    // Weapon
     UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
-    void RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister, ARswWeaponBase* InWeaponToRegister, bool bRegisterAsEquippedWeapon = false);
+    void RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister, ARswWeaponBase* InWeaponToRegister, bool bRegisterAsEquippedWeapon = false, bool IsShield = false);
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     ARswWeaponBase* GetCharacterCarriedWeaponByTag(FGameplayTag InWeaponTagToGet) const;
@@ -37,6 +38,11 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     ARswWeaponBase* GetCharacterCurrentEquippedWeapon() const;
+
+    // Shield
+    UPROPERTY(BlueprintReadWrite, Category = "Rsw|Combat")
+    FGameplayTag CurrentEquippedShieldTag;
+
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|Combat")
     void ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType = EToggleDamageType::CurrentEquippedWeapon);
@@ -49,4 +55,5 @@ protected:
 
 private:
     TMap<FGameplayTag, ARswWeaponBase*> CharacterCarriedWeaponMap;
+    TMap<FGameplayTag, ARswWeaponBase*> CharacterCarriedShieldMap;
 };

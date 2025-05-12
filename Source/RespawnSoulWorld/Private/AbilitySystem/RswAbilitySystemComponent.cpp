@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/RswHeroGameplayAbility.h"
+#include "RswGameplayTags.h"
 
 void URswAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInputTag)
 {
@@ -15,12 +16,38 @@ void URswAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInp
     {
         if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag)) continue;
 
-        TryActivateAbility(AbilitySpec.Handle);
+        if (InInputTag.MatchesTag(RswGameplayTags::InputTag_Toggleable))
+        {
+            if (AbilitySpec.IsActive())
+            {
+                CancelAbilityHandle(AbilitySpec.Handle);
+            }
+            else
+            {
+                TryActivateAbility(AbilitySpec.Handle);
+            }
+        }
+        else
+        {
+            TryActivateAbility(AbilitySpec.Handle);
+        }
     }
 }
 
 void URswAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+    if (!InInputTag.IsValid() || !InInputTag.MatchesTag(RswGameplayTags::InputTag_MustBeHeld))
+    {
+        return;
+    }
+
+    for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+    {
+        if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag) && AbilitySpec.IsActive())
+        {
+            CancelAbilityHandle(AbilitySpec.Handle);
+        }
+    }
 }
 
 void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)

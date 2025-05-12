@@ -6,20 +6,39 @@
 #include "Components/BoxComponent.h"
 
 #include "RswDebugHelper.h"
-void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister, ARswWeaponBase* InWeaponToRegister, bool bRegisterAsEquippedWeapon)
+void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTagToRegister, ARswWeaponBase* InWeaponToRegister, bool bRegisterAsEquippedWeapon, bool IsShield)
 {
+
     checkf(!CharacterCarriedWeaponMap.Contains(InWeaponTagToRegister), TEXT("A named named %s has already been added as carried weapon"), *InWeaponTagToRegister.ToString());
     check(InWeaponToRegister);
 
     CharacterCarriedWeaponMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
-
-    InWeaponToRegister->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnHitTargetActor);
-    InWeaponToRegister->OnWeaponPulledFromTarget.BindUObject(this, &ThisClass::OnWeaponPulledFromTargetActor);
-
     if (bRegisterAsEquippedWeapon)
     {
         CurrentEquippedWeaponTag = InWeaponTagToRegister;
     }
+    //if (!IsShield)
+    //{
+    //    checkf(!CharacterCarriedWeaponMap.Contains(InWeaponTagToRegister), TEXT("A named named %s has already been added as carried weapon"), *InWeaponTagToRegister.ToString());
+    //    check(InWeaponToRegister);
+
+    //    CharacterCarriedWeaponMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
+    //    if (bRegisterAsEquippedWeapon)
+    //    {
+    //        CurrentEquippedWeaponTag = InWeaponTagToRegister;
+    //    }
+    //}
+    //else
+    //{
+    //    checkf(!CharacterCarriedShieldMap.Contains(InWeaponTagToRegister), TEXT("A named named %s has already been added as carried weapon"), *InWeaponTagToRegister.ToString());
+    //    check(InWeaponToRegister);
+
+    //    CharacterCarriedShieldMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
+    //    CurrentEquippedShieldTag = InWeaponTagToRegister;
+    //}
+    InWeaponToRegister->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnHitTargetActor);
+    InWeaponToRegister->OnWeaponPulledFromTarget.BindUObject(this, &ThisClass::OnWeaponPulledFromTargetActor);
+
 
     // const FString WeaponString = FString::Printf(TEXT("A weapon named: %s has been registered using the tag %s"), *InWeaponToRegister->GetName(), *InWeaponTagToRegister.ToString());
     // Debug::Print(WeaponString);
@@ -47,6 +66,8 @@ ARswWeaponBase* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() const
 
     return GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
 }
+
+
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
 {

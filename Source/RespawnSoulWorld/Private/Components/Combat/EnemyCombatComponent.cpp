@@ -4,7 +4,7 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "RswGameplayTags.h"
-
+#include "RswFunctionLibrary.h"
 #include "RswDebugHelper.h"
 
 void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
@@ -16,12 +16,13 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	//TODO:: Implement block check
 	bool bIsValidBlock = false;
 
-	const bool bIsPlayerBlocking = false;
+	const bool bIsPlayerBlocking = URswFunctionLibrary::NativeDoesActorHaveTag(HitActor, RswGameplayTags::Player_Status_Blocking);;
 	const bool bIsMyAttackUnblockable = false;
 
 	if (bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
 		//TODO::check if the block is valid
+		bIsValidBlock = URswFunctionLibrary::IsValidBlock(GetOwningPawn(), HitActor);
 	}
 
 	FGameplayEventData EventData;
@@ -30,7 +31,11 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 	if (bIsValidBlock)
 	{
-		//TODO::Handle successful block
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			HitActor,
+			RswGameplayTags::Player_Event_SuccessfulBlock,
+			EventData
+		);
 	}
 	else
 	{
