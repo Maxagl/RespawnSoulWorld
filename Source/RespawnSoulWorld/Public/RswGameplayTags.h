@@ -19,6 +19,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Shield);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
@@ -51,6 +52,8 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_HitPause);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -83,6 +86,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
+
 
 
 }
