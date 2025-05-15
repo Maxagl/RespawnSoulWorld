@@ -9,7 +9,8 @@
 #include "Components/UI/EnemyUIComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/RswWidgetBase.h"
-
+#include "Components/BoxComponent.h"
+#include "RswFunctionLibrary.h"
 #include "RswDebugHelper.h"
 
 ARswEnemyCharacter::ARswEnemyCharacter()
@@ -31,6 +32,26 @@ ARswEnemyCharacter::ARswEnemyCharacter()
 
     EnemyHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>("EnemyHealthWidgetComponent");
     EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
+
+    LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
+    LeftHandCollisionBox->SetupAttachment(GetMesh());
+    LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+    RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
+    RightHandCollisionBox->SetupAttachment(GetMesh());
+    RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+    LeftLegCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftLegCollisionBox");
+    LeftLegCollisionBox->SetupAttachment(GetMesh());
+    LeftLegCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    LeftLegCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+    RightLegCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightLegCollisionBox");
+    RightLegCollisionBox->SetupAttachment(GetMesh());
+    RightLegCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    RightLegCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
 }
 
 UPawnCombatComponent* ARswEnemyCharacter::GetPawnCombatComponent() const
@@ -63,6 +84,44 @@ void ARswEnemyCharacter::PossessedBy(AController* NewController)
     Super::PossessedBy(NewController);
 
     InitEnemyStartUpData();
+}
+
+#if WITH_EDITOR
+void ARswEnemyCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionBoxAttachBoneName))
+    {
+        LeftHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandCollisionBoxAttachBoneName);
+    }
+
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionBoxAttachBoneName))
+    {
+        RightHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandCollisionBoxAttachBoneName);
+    }
+
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftLegCollisionBoxAttachBoneName))
+    {
+        LeftLegCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftLegCollisionBoxAttachBoneName);
+    }
+
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightLegCollisionBoxAttachBoneName))
+    {
+        RightLegCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightLegCollisionBoxAttachBoneName);
+    }
+}
+#endif
+
+void ARswEnemyCharacter::OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    if (APawn* HitPawn = Cast<APawn>(OtherActor))
+    {
+        if (URswFunctionLibrary::IsTargetPawnHostile(this, HitPawn))
+        {
+            EnemyCombatComponent->OnHitTargetActor(HitPawn);
+        }
+    }
 }
 
 void ARswEnemyCharacter::InitEnemyStartUpData()

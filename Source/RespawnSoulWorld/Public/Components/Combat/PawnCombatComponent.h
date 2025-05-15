@@ -16,7 +16,9 @@ enum class EToggleDamageType : uint8
 {
     CurrentEquippedWeapon,
     LeftHand,
-    RightHand
+    RightHand,
+    LeftLeg,
+    RightLeg
 };
 /**
  * 
@@ -51,6 +53,8 @@ public:
     virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor);
 
 protected:
+    virtual void ToggleCurrentEquippedWeaponCollision(bool bShouldEnable);
+    virtual void ToggleBodyCollsionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType);
     TArray<AActor*> OverlappedActors;
 
 private:

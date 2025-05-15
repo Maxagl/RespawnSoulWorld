@@ -5,6 +5,10 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "RswGameplayTags.h"
 #include "RswFunctionLibrary.h"
+#include "Characters/RswEnemyCharacter.h"
+#include "Components/BoxComponent.h"
+
+
 #include "RswDebugHelper.h"
 
 void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
@@ -17,7 +21,7 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	bool bIsValidBlock = false;
 
 	const bool bIsPlayerBlocking = URswFunctionLibrary::NativeDoesActorHaveTag(HitActor, RswGameplayTags::Player_Status_Blocking);;
-	const bool bIsMyAttackUnblockable = false;
+	const bool bIsMyAttackUnblockable = URswFunctionLibrary::NativeDoesActorHaveTag(GetOwningPawn(), RswGameplayTags::Enemy_Status_Unbloackable);;
 
 	if (bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
@@ -46,4 +50,43 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 		);
 	}
 
+}
+
+void UEnemyCombatComponent::ToggleBodyCollsionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	ARswEnemyCharacter* OwningEnemyCharacter = GetOwningPawn<ARswEnemyCharacter>();
+
+	check(OwningEnemyCharacter);
+
+	UBoxComponent* LeftHandCollisionBox = OwningEnemyCharacter->GetLeftHandCollisionBox();
+	UBoxComponent* RightHandCollisionBox = OwningEnemyCharacter->GetRightHandCollisionBox();
+	UBoxComponent* LeftLegCollisionBox = OwningEnemyCharacter->GetLeftLegCollisionBox();
+	UBoxComponent* RightLegCollisionBox = OwningEnemyCharacter->GetRightLegCollisionBox();
+
+	check(LeftHandCollisionBox && RightHandCollisionBox && LeftLegCollisionBox && RightLegCollisionBox);
+
+	switch (ToggleDamageType)
+	{
+	case EToggleDamageType::LeftHand:
+		LeftHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+
+	case EToggleDamageType::RightHand:
+		RightHandCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+	case EToggleDamageType::LeftLeg:
+		LeftLegCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+
+	case EToggleDamageType::RightLeg:
+		RightLegCollisionBox->SetCollisionEnabled(bShouldEnable ? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
+		break;
+	default:
+		break;
+	}
+
+	if (!bShouldEnable)
+	{
+		OverlappedActors.Empty();
+	}
 }

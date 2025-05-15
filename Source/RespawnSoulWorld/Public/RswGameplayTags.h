@@ -71,6 +71,7 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAttack);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Unbloackable);
 
     /** Shared tags **/
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
@@ -78,6 +79,7 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 

@@ -13,7 +13,8 @@ public class RespawnSoulWorld : ModuleRules
 		"GameplayTasks",
         "UMG",
         "AnimGraphRuntime",
-        "MotionWarping"
+        "MotionWarping",
+        "Niagara"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
