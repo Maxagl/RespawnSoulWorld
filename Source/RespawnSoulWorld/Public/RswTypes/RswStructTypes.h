@@ -27,6 +27,19 @@ struct FRswHeroAbilitySet
     bool IsValid() const;
 };
 
+
+USTRUCT(BlueprintType)
+struct FRswHeroSpecialAbilitySet : public FRswHeroAbilitySet
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSoftObjectPtr<UMaterialInterface> SoftAbilityIconMaterial;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Player.Cooldown"))
+    FGameplayTag AbilityCooldownTag;
+};
+
 USTRUCT(BlueprintType)
 struct FRswHeroWeaponData
 {
@@ -40,6 +53,9 @@ struct FRswHeroWeaponData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
     TArray<FRswHeroAbilitySet> DefaultWeaponAbilities;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+    TArray<FRswHeroSpecialAbilitySet> SpecialWeaponAbilities;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FScalableFloat WeaponBaseDamage;

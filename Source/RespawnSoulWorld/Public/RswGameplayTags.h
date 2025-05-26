@@ -20,11 +20,15 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stones);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_TargetLock);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
 
     /** Player tags **/
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Sword);
@@ -39,6 +43,13 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Light);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
+
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Light);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAbility_Heavy);
 
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Sword);
@@ -54,11 +65,18 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Blocking);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_TargetLock);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Activating);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Active);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Full);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_None);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
@@ -84,6 +102,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
+    
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 
@@ -92,7 +111,6 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
-
-
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
 
 }

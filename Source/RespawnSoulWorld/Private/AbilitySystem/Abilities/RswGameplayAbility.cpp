@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/RswGameplayAbility.h"
 #include "AbilitySystem/RswAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
+#include "RswFunctionLibrary.h"
+#include "RswGameplayTags.h"
 #include "AbilitySystemBlueprintLibrary.h"
 
 void URswGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
@@ -61,4 +63,38 @@ FActiveGameplayEffectHandle URswGameplayAbility::BP_ApplyEffectSpecHandleToTarge
     OutSuccessType = ActiveGameplayEffectHandle.WasSuccessfullyApplied() ? ERswSuccessType::Successful : ERswSuccessType::Failed;
 
     return ActiveGameplayEffectHandle;
+}
+
+void URswGameplayAbility::ApplyGameplayEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults)
+{
+    if (InHitResults.IsEmpty())
+    {
+        return;
+    }
+
+    APawn* OwningPawn = CastChecked<APawn>(GetAvatarActorFromActorInfo());
+
+    for (const FHitResult& Hit : InHitResults)
+    {
+        if (APawn* HitPawn = Cast<APawn>(Hit.GetActor()))
+        {
+            if (URswFunctionLibrary::IsTargetPawnHostile(OwningPawn, HitPawn))
+            {
+                FActiveGameplayEffectHandle ActiveGameplayEffectHandle = NativeApplyEffectSpecHandleToTarget(HitPawn, InSpecHandle);
+
+                if (ActiveGameplayEffectHandle.WasSuccessfullyApplied())
+                {
+                    FGameplayEventData Data;
+                    Data.Instigator = OwningPawn;
+                    Data.Target = HitPawn;
+
+                    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+                        HitPawn,
+                        RswGameplayTags::Shared_Event_HitReact,
+                        Data
+                    );
+                }
+            }
+        }
+    }
 }

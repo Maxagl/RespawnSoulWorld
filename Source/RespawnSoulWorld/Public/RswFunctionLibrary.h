@@ -51,6 +51,11 @@ public:
     UFUNCTION(BlueprintPure, Category = "Rsw|FunctionLibrary")
     static bool IsValidBlock(AActor* InAttacker, AActor* InDefender);
 
-    UFUNCTION(BlueprintCallable, Category = "Warrior|FunctionLibrary")
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary")
     static bool ApplyGameplayEffectSpecHandleToTargetActor(AActor* InInstigator, AActor* InTargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary", meta = (Latent, WorldContext = "WorldContextObject", LatentInfo = "LatentInfo", ExpandEnumAsExecs = "CountDownInput|CountDownOutput", TotalTime = "1.0", UpdateInterval = "0.1"))
+    static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
+        float& OutRemainingTime, ERswCountDownActionInput CountDownInput,
+        UPARAM(DisplayName = "Output") ERswCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
 };

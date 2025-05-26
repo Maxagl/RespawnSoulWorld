@@ -23,6 +23,7 @@ UAbilityTask_WaitSpawnEnemies* UAbilityTask_WaitSpawnEnemies::WaitSpawnEnemies(U
 
 void UAbilityTask_WaitSpawnEnemies::Activate()
 {
+    Debug::Print(TEXT("Activate task, bind delegate"));
     FGameplayEventMulticastDelegate& Delegate = AbilitySystemComponent->GenericGameplayEventCallbacks.FindOrAdd(CachedEventTag);
 
     DelegateHandle = Delegate.AddUObject(this, &ThisClass::OnGameplayEventReceived);
@@ -39,7 +40,9 @@ void UAbilityTask_WaitSpawnEnemies::OnDestroy(bool bInOwnerFinished)
 
 void UAbilityTask_WaitSpawnEnemies::OnGameplayEventReceived(const FGameplayEventData* InPayload)
 {
-
+    // 这里相当于是我如果设置了需要spawn的类的话，我就进入资源加载环节
+    // 没有设置的话就是broadcast didnotSpawn，结束task
+    Debug::Print(TEXT("Received Event, spawn enemy"));
     if (ensure(!CachedSoftEnemyClassToSpawn.IsNull()))
     {
         UAssetManager::Get().GetStreamableManager().RequestAsyncLoad(
@@ -63,6 +66,7 @@ void UAbilityTask_WaitSpawnEnemies::OnEnemyClassLoaded()
     UClass* LoadedClass = CachedSoftEnemyClassToSpawn.Get();
     UWorld* World = GetWorld();
 
+    // 这里也是保护机制，防止没法生成，却硬生成
     if (!LoadedClass || !World)
     {
         if (ShouldBroadcastAbilityTaskDelegates())
@@ -99,6 +103,7 @@ void UAbilityTask_WaitSpawnEnemies::OnEnemyClassLoaded()
 
     if (ShouldBroadcastAbilityTaskDelegates())
     {
+        // 这次是生成完了，但是我继续保护防止没生成
         if (!SpawnedEnemies.IsEmpty())
         {
             OnSpawnFinished.Broadcast(SpawnedEnemies);

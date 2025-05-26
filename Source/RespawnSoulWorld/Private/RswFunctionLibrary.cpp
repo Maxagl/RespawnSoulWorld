@@ -8,6 +8,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "RswGameplayTags.h"
 #include "GenericTeamAgentInterface.h"
+#include "RswTypes/RswCountDownAction.h"
+
 #include "RswDebugHelper.h"
 
 URswAbilitySystemComponent* URswFunctionLibrary::NativeGetRswASCFromActor(AActor* InActor)
@@ -148,4 +150,45 @@ bool URswFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor* InI
 	FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 
 	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void URswFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
+	float& OutRemainingTime, ERswCountDownActionInput CountDownInput,
+	UPARAM(DisplayName = "Output") ERswCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
+{
+	UWorld* World = nullptr;
+
+	if (GEngine)
+	{
+		World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	}
+
+	if (!World)
+	{
+		return;
+	}
+
+	FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+
+	FRswCountDownAction* FoundAction = LatentActionManager.FindExistingAction<FRswCountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+	if (CountDownInput == ERswCountDownActionInput::Start)
+	{
+		if (!FoundAction)
+		{
+			LatentActionManager.AddNewAction(
+				LatentInfo.CallbackTarget,
+				LatentInfo.UUID,
+				new FRswCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo)
+			);
+		}
+	}
+
+	if (CountDownInput == ERswCountDownActionInput::Cancel)
+	{
+		if (FoundAction)
+		{
+			FoundAction->CancelAction();
+		}
+	}
 }

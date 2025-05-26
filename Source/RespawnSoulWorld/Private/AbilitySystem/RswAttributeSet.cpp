@@ -48,6 +48,21 @@ void URswAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
         const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());
 
         SetCurrentRage(NewCurrentRage);
+
+        if (GetCurrentRage() == GetMaxRage())
+        {
+            URswFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), RswGameplayTags::Player_Status_Rage_Full);
+        }
+        else if (GetCurrentRage() == 0.f)
+        {
+            URswFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), RswGameplayTags::Player_Status_Rage_None);
+        }
+        else
+        {
+            URswFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), RswGameplayTags::Player_Status_Rage_Full);
+            URswFunctionLibrary::RemoveGameplayTagFromActorIfFound(Data.Target.GetAvatarActor(), RswGameplayTags::Player_Status_Rage_None);
+        }
+
         if (UHeroUIComponent* HeroUIComponent = CachedPawnUIInterface->GetHeroUIComponent())
         {
             HeroUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());

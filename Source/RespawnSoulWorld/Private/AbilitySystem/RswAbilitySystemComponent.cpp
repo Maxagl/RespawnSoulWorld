@@ -50,7 +50,7 @@ void URswAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InIn
     }
 }
 
-void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
+void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, const TArray<FRswHeroSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
 {
 
     if (InDefaultWeaponAbilities.IsEmpty())
@@ -69,6 +69,19 @@ void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroA
 
         OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
     }
+
+    for (const FRswHeroSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
+    {
+        if (!AbilitySet.IsValid()) continue;
+
+        FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+        AbilitySpec.SourceObject = GetAvatarActor();
+        AbilitySpec.Level = ApplyLevel;
+        AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+
+        OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
+    }
+
 }
 
 void URswAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)

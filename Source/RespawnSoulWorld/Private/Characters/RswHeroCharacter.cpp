@@ -104,6 +104,7 @@ void ARswHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
 
 	RswEnhancedInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
@@ -161,6 +162,17 @@ void ARswHeroCharacter::Input_SwitchTargetCompleted(const FInputActionValue& Inp
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
 		this,
 		SwitchDirection.X > 0.f ? RswGameplayTags::Player_Event_SwitchTarget_Right : RswGameplayTags::Player_Event_SwitchTarget_Left,
+		Data
+	);
+}
+
+void ARswHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+{
+	FGameplayEventData Data;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		this,
+		RswGameplayTags::Player_Event_ConsumeStones,
 		Data
 	);
 }

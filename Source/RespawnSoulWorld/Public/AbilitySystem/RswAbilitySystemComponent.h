@@ -20,7 +20,7 @@ public:
 
 
     UFUNCTION(BlueprintCallable, Category = "Rsw|Ability", meta = (ApplyLevel = "1"))
-    void GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
+    void GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, const TArray<FRswHeroSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
 
 
     UFUNCTION(BlueprintCallable, Category = "Warrior|Ability")

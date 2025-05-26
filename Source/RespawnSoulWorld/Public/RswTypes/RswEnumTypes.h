@@ -20,3 +20,18 @@ enum class ERswSuccessType : uint8
     Successful,
     Failed
 };
+
+UENUM()
+enum class ERswCountDownActionInput : uint8
+{
+    Start,
+    Cancel
+};
+
+UENUM()
+enum class ERswCountDownActionOutput : uint8
+{
+    Updated,
+    Completed,
+    Cancelled
+};
