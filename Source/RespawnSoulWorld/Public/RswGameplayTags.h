@@ -85,6 +85,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SummonEnemies);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SpawnStone);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 
