@@ -11,6 +11,8 @@
 #include "Widgets/RswWidgetBase.h"
 #include "Components/BoxComponent.h"
 #include "RswFunctionLibrary.h"
+#include "GameMode/RswBaseGameMode.h"
+
 #include "RswDebugHelper.h"
 
 ARswEnemyCharacter::ARswEnemyCharacter()
@@ -130,15 +132,40 @@ void ARswEnemyCharacter::InitEnemyStartUpData()
     {
         return;
     }
+    int32 AbilityApplyLevel = 1;
 
+    if (ARswBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<ARswBaseGameMode>())
+    {
+        switch (BaseGameMode->GetCurrentGameDifficulty())
+        {
+        case ERswGameDifficulty::Easy:
+            AbilityApplyLevel = 1;
+            break;
+
+        case ERswGameDifficulty::Normal:
+            AbilityApplyLevel = 2;
+            break;
+
+        case ERswGameDifficulty::Hard:
+            AbilityApplyLevel = 3;
+            break;
+
+        case ERswGameDifficulty::VeryHard:
+            AbilityApplyLevel = 4;
+            break;
+
+        default:
+            break;
+        }
+    }
     UAssetManager::GetStreamableManager().RequestAsyncLoad(
         CharacterStartUpData.ToSoftObjectPath(),
         FStreamableDelegate::CreateLambda(
-            [this]()
+            [this, AbilityApplyLevel]()
             {
                 if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
                 {
-                    LoadedData->GiveToAbilitySystemComponent(RswAbilitySystemComponent);
+                    LoadedData->GiveToAbilitySystemComponent(RswAbilitySystemComponent, AbilityApplyLevel);
 
                     // Debug::Print(TEXT("Enemy Start Up Data Loaded"), FColor::Green);
                 }

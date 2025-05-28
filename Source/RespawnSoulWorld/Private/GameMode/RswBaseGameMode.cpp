@@ -3,3 +3,8 @@
 
 #include "GameMode/RswBaseGameMode.h"
 
+ARswBaseGameMode::ARswBaseGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}

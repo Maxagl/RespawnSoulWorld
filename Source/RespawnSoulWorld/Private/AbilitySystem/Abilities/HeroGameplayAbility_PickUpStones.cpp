@@ -46,7 +46,7 @@ void UHeroGameplayAbility_PickUpStones::CollectStones()
 			CollectedStones.AddUnique(FoundStone);
 		}
 	}
-
+	// 正在取消这个能力的位置，当周围没有石头再取消
 	if (CollectedStones.IsEmpty())
 	{
 		CancelAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true);

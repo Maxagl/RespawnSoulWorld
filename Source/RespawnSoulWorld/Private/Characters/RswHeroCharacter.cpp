@@ -15,6 +15,7 @@
 #include "Components/Combat/HeroCombatComponent.h"
 #include "Components/UI/HeroUIComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameMode/RswBaseGameMode.h"
 
 #include "RswDebugHelper.h"
 
@@ -78,7 +79,34 @@ void ARswHeroCharacter::PossessedBy(AController* NewController)
 		{
 			if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
 			{
-				LoadedData->GiveToAbilitySystemComponent(RswAbilitySystemComponent);
+				int32 AbilityApplyLevel = 1;
+
+				if (ARswBaseGameMode* BaseGameMode = GetWorld()->GetAuthGameMode<ARswBaseGameMode>())
+				{
+					switch (BaseGameMode->GetCurrentGameDifficulty())
+					{
+					case ERswGameDifficulty::Easy:
+						AbilityApplyLevel = 4;
+						break;
+
+					case ERswGameDifficulty::Normal:
+						AbilityApplyLevel = 3;
+						break;
+
+					case ERswGameDifficulty::Hard:
+						AbilityApplyLevel = 2;
+						break;
+
+					case ERswGameDifficulty::VeryHard:
+						AbilityApplyLevel = 1;
+						break;
+
+					default:
+						break;
+					}
+				}
+
+				LoadedData->GiveToAbilitySystemComponent(RswAbilitySystemComponent, AbilityApplyLevel);
 			}
 		}
 	}
