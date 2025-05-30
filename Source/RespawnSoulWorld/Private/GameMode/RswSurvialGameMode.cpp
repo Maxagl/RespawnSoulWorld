@@ -7,8 +7,20 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
 #include "NavigationSystem.h"
-
+#include "RswFunctionLibrary.h"
 #include "RswDebugHelper.h"
+
+void ARswSurvialGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	ERswGameDifficulty SavedGameDifficulty;
+
+	if (URswFunctionLibrary::TryLoadSavedGameDifficulty(SavedGameDifficulty))
+	{
+		CurrentGameDifficulty = SavedGameDifficulty;
+	}
+}
 
 void ARswSurvialGameMode::BeginPlay()
 {

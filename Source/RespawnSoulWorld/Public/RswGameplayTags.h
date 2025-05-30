@@ -114,4 +114,9 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Back);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
 
+    /** Game Data tags **/
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameModeMap);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenuMap);
+
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
 }

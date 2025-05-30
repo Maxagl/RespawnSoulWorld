@@ -9,6 +9,9 @@
 #include "RswGameplayTags.h"
 #include "GenericTeamAgentInterface.h"
 #include "RswTypes/RswCountDownAction.h"
+#include "RswGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/RswSaveGame.h"
 
 #include "RswDebugHelper.h"
 
@@ -191,4 +194,91 @@ void URswFunctionLibrary::CountDown(const UObject* WorldContextObject, float Tot
 			FoundAction->CancelAction();
 		}
 	}
+}
+
+URswGameInstance* URswFunctionLibrary::GetRswGameInstance(const UObject* WorldContextObject)
+{
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<URswGameInstance>();
+		}
+	}
+
+	return nullptr;
+}
+
+void URswFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, ERswInputMode InInputMode)
+{
+	APlayerController* PlayerController = nullptr;
+
+	if (GEngine)
+	{
+		if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+		{
+			PlayerController = World->GetFirstPlayerController();
+		}
+	}
+
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	FInputModeGameOnly GameOnlyMode;
+	FInputModeUIOnly UIOnlyMode;
+
+	switch (InInputMode)
+	{
+	case ERswInputMode::GameOnly:
+
+		PlayerController->SetInputMode(GameOnlyMode);
+		PlayerController->bShowMouseCursor = false;
+
+		break;
+
+	case ERswInputMode::UIOnly:
+
+		PlayerController->SetInputMode(UIOnlyMode);
+		PlayerController->bShowMouseCursor = true;
+
+		break;
+
+	default:
+		break;
+	}
+}
+
+void URswFunctionLibrary::SaveCurrentGameDifficulty(ERswGameDifficulty InDifficultyToSave)
+{
+	USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(URswSaveGame::StaticClass());
+
+	if (URswSaveGame* RswSaveGameObject = Cast<URswSaveGame>(SaveGameObject))
+	{
+		RswSaveGameObject->SavedCurrentGameDifficulty = InDifficultyToSave;
+
+		const bool bWasSaved = UGameplayStatics::SaveGameToSlot(RswSaveGameObject, RswGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+		Debug::Print(bWasSaved ? TEXT("Difficulty Saved") : TEXT("Difficulty NOT Saved"));
+	}
+}
+
+bool URswFunctionLibrary::TryLoadSavedGameDifficulty(ERswGameDifficulty& OutSavedDifficulty)
+{
+	if (UGameplayStatics::DoesSaveGameExist(RswGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0))
+	{
+		USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(RswGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+		if (URswSaveGame* RswSaveGameObject = Cast<URswSaveGame>(SaveGameObject))
+		{
+			OutSavedDifficulty = RswSaveGameObject->SavedCurrentGameDifficulty;
+
+			Debug::Print(TEXT("Loading Successful"), FColor::Green);
+
+			return true;
+		}
+	}
+
+	return false;
 }

@@ -11,6 +11,7 @@
 class URswAbilitySystemComponent;
 class UPawnCombatComponent;
 struct FScalableFloat;
+class URswGameInstance;
 
 /**
  * 
@@ -58,4 +59,18 @@ public:
     static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
         float& OutRemainingTime, ERswCountDownActionInput CountDownInput,
         UPARAM(DisplayName = "Output") ERswCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
+
+    UFUNCTION(BlueprintPure, Category = "Rsw|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+    static URswGameInstance* GetRswGameInstance(const UObject* WorldContextObject);
+
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+    static void ToggleInputMode(const UObject* WorldContextObject, ERswInputMode InInputMode);
+
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary")
+    static void SaveCurrentGameDifficulty(ERswGameDifficulty InDifficultyToSave);
+
+    UFUNCTION(BlueprintCallable, Category = "Rsw|FunctionLibrary")
+    static bool TryLoadSavedGameDifficulty(ERswGameDifficulty& OutSavedDifficulty);
 };
