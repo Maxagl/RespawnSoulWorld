@@ -3,6 +3,11 @@
 
 #include "Animinstances/Hero/RswHeroAnimInstance.h"
 #include "Characters/RswHeroCharacter.h"
+#include "AbilitySystem/RswAbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
+#include "RswGameplayTags.h"
+
+#include "RswDebugHelper.h"
 
 void URswHeroAnimInstance::NativeInitializeAnimation()
 {
@@ -17,6 +22,11 @@ void URswHeroAnimInstance::NativeInitializeAnimation()
 void URswHeroAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 {
     Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
+    if (OwningHeroCharacter)
+    {
+        bShouldEnterRunningState = OwningHeroCharacter->GetRswAbilitySystemComponent()->HasMatchingGameplayTag(RswGameplayTags::Player_Status_Running);
+    }
+    
     if (bHasAcceleration)
     {
         IdleElpasedTime = 0.f;

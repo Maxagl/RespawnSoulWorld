@@ -25,6 +25,9 @@ protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
     bool bShouldEnterRelaxState;
 
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
+    bool bShouldEnterRunningState;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
     float EnterRelaxtStateThreshold = 5.f;
 

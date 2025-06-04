@@ -8,11 +8,13 @@ namespace RswGameplayTags
     /** Input Tags **/
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Move, "InputTag.Move");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Look, "InputTag.Look");
+
     UE_DEFINE_GAMEPLAY_TAG(InputTag_EquipSword, "InputTag.EquipSword");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_UnequipSword, "InputTag.UnequipSword");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_LightAttack_Sword, "InputTag.LightAttack.Sword");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_HeavyAttack_Sword, "InputTag.HeavyAttack.Sword");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Roll, "InputTag.Roll");
+    
     UE_DEFINE_GAMEPLAY_TAG(InputTag_SwitchTarget, "InputTag.SwitchTarget");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Light, "InputTag.SpecialWeaponAbility.Light");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_SpecialWeaponAbility_Heavy, "InputTag.SpecialWeaponAbility.Heavy");
@@ -20,6 +22,7 @@ namespace RswGameplayTags
 
     UE_DEFINE_GAMEPLAY_TAG(InputTag_MustBeHeld, "InputTag.MustBeHeld");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_MustBeHeld_Block, "InputTag.MustBeHeld.Block");
+    UE_DEFINE_GAMEPLAY_TAG(InputTag_MustBeHeld_Run, "InputTag.MustBeHeld.Run");
 
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable, "InputTag.Toggleable");
     UE_DEFINE_GAMEPLAY_TAG(InputTag_Toggleable_TargetLock, "InputTag.Toggleable.TargetLock");
@@ -45,6 +48,7 @@ namespace RswGameplayTags
 
     UE_DEFINE_GAMEPLAY_TAG(Player_Ability_HitPause, "Player.Ability.HitPause");
     UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Roll, "Player.Ability.Roll");
+    UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Run, "Player.Ability.Run");
     UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Block, "Player.Ability.Block");
     UE_DEFINE_GAMEPLAY_TAG(Player_Ability_TargetLock, "Player.Ability.TargetLock");
     UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Rage, "Player.Ability.Rage");
@@ -77,6 +81,7 @@ namespace RswGameplayTags
 
     UE_DEFINE_GAMEPLAY_TAG(Player_Status_JumpToFinisher, "Player.Status.JumpToFinisher");
     UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rolling, "Player.Status.Rolling");
+    UE_DEFINE_GAMEPLAY_TAG(Player_Status_Running, "Player.Status.Running");
     UE_DEFINE_GAMEPLAY_TAG(Player_Status_Blocking, "Player.Status.Blocking");
     UE_DEFINE_GAMEPLAY_TAG(Player_Status_TargetLock, "Player.Status.TargetLock");
     UE_DEFINE_GAMEPLAY_TAG(Player_Status_Rage_Activating, "Player.Status.Rage.Activating");

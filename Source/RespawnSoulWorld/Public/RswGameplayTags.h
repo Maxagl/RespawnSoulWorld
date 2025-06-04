@@ -8,6 +8,7 @@ namespace RswGameplayTags
     /** Input Tags **/
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Move);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Look);
+  
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EquipSword);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UnequipSword);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Sword);
@@ -19,6 +20,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Shield);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
+    
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
@@ -26,6 +28,7 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Run);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_TargetLock);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
@@ -41,6 +44,7 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_HitPause);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Roll);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Run);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
@@ -71,6 +75,7 @@ namespace RswGameplayTags
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Running);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Blocking);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_TargetLock);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rage_Activating);
