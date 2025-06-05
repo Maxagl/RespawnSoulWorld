@@ -11,6 +11,7 @@ class UEnemyCombatComponent;
 class UEnemyUIComponent;
 class UWidgetComponent;
 class UBoxComponent;
+class ATargetPoint;
 /**
  * 
  */
@@ -42,6 +43,9 @@ protected:
     virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
     //~ End UObject Interface
 #endif
+
+    UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Patrol")
+    TArray<ATargetPoint*> PatrolLocations;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
     UEnemyCombatComponent* EnemyCombatComponent;
@@ -89,4 +93,5 @@ public:
 
     FORCEINLINE UBoxComponent* GetLeftLegCollisionBox() const { return LeftLegCollisionBox; }
     FORCEINLINE UBoxComponent* GetRightLegCollisionBox() const { return RightLegCollisionBox; }
+    FORCEINLINE TArray<ATargetPoint*> GetPatrolLocations() const { return PatrolLocations; }
 };

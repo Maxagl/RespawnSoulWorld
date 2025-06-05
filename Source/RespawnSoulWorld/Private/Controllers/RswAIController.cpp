@@ -6,6 +6,8 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Characters/RswHeroCharacter.h"
+#include "Perception/AIPerceptionSystem.h"
 
 #include "RswDebugHelper.h"
 
@@ -19,7 +21,7 @@ ARswAIController::ARswAIController(const FObjectInitializer& ObjectInitializer)
 	AISenseConfig_Sight->SightRadius = 5000.f;
 	AISenseConfig_Sight->LoseSightRadius = 0.f;
 	AISenseConfig_Sight->PeripheralVisionAngleDegrees = 360.f;
-
+	
 	EnemyPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>("EnemyPerceptionComponent");
 	EnemyPerceptionComponent->ConfigureSense(*AISenseConfig_Sight);
 	EnemyPerceptionComponent->SetDominantSense(UAISenseConfig_Sight::StaticClass());
@@ -45,7 +47,6 @@ ETeamAttitude::Type ARswAIController::GetTeamAttitudeTowards(const AActor& Other
 void ARswAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
 	if (UCrowdFollowingComponent* CrowdComp = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
 	{
 		CrowdComp->SetCrowdSimulationState(bEnableDetourCrowdAvoidance ? ECrowdSimulationState::Enabled : ECrowdSimulationState::Disabled);
@@ -66,6 +67,7 @@ void ARswAIController::BeginPlay()
 	}
 }
 
+// 第一次进入，和销毁离开的时候都会触发
 void ARswAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
@@ -77,5 +79,19 @@ void ARswAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimu
 				BlackboardComponent->SetValueAsObject(FName("TargetActor"), Actor);
 			}
 		}
+		else
+		{
+			Debug::Print(FString("Remove Target Actor"));
+			Debug::Print(FString("Remove Target Actor") + Actor->GetName());
+			if (Actor->IsA(ARswHeroCharacter::StaticClass()))
+			{
+				if (BlackboardComponent->GetValueAsObject(FName("TargetActor")))
+				{
+					BlackboardComponent->ClearValue(FName("TargetActor"));
+				}
+			}
+		}
+
 	}
 }
+
