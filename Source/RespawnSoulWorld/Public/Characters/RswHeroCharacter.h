@@ -13,6 +13,9 @@ class UDataAsset_InputConfig;
 struct FInputActionValue;
 class UHeroCombatComponent;
 class UHeroUIComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPressEnterDoor);
+
 /**
  * 
  */
@@ -22,7 +25,7 @@ class RESPAWNSOULWORLD_API ARswHeroCharacter : public ARswBaseCharacter
 	GENERATED_BODY()
 public:
 	ARswHeroCharacter();
-
+	FOnPressEnterDoor EnterDoorDelegate;
 	//~ Begin PawnCombatInterface Interface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End PawnCombatInterface Interface
@@ -66,6 +69,7 @@ private:
 	void Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue);
 
 	void Input_PickUpStonesStarted(const FInputActionValue& InputActionValue);
+	void Input_EnterDoorStarted(const FInputActionValue& InputActionValue);
 
 	void Input_AbilityInputPressed(FGameplayTag InInputTag);
 	void Input_AbilityInputReleased(FGameplayTag InInputTag);

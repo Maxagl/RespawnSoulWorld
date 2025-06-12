@@ -42,7 +42,8 @@ inline void URwsEnhancedInputComponent::BindAbilityInputAction(const UDataAsset_
     for (const FRswInputActionConfig& AbilityInputActionConfig : InInputConfig->AbilityInputActions)
     {
         if (!AbilityInputActionConfig.IsValid()) continue;
-
+        // 这里的源码，简直就是模板的炫技
+        // 可以简单的理解为，这个绑定后面的参数后面会自动添加到delegate的回调函数里面去，所以我们写回调函数的时候也要加入这些参数
         BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Started, ContextObject, InputPressedFunc, AbilityInputActionConfig.InputTag);
         BindAction(AbilityInputActionConfig.InputAction, ETriggerEvent::Completed, ContextObject, InputRelasedFunc, AbilityInputActionConfig.InputTag);
     }

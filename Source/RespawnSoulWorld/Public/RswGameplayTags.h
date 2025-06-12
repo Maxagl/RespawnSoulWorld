@@ -25,6 +25,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Light);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAbility_Heavy);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stones);
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_EnterDoor);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
@@ -72,6 +73,7 @@ namespace RswGameplayTags
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
+    //UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_EnterDoor);
 
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
     UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);

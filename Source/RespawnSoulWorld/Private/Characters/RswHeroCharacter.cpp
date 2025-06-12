@@ -137,6 +137,7 @@ void ARswHeroCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
 	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
+	RswEnhancedInputComponent->BindNativeInputAction(InputConfigDataAsset, RswGameplayTags::InputTag_EnterDoor, ETriggerEvent::Completed, this, &ThisClass::Input_EnterDoorStarted);
 
 	RswEnhancedInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
@@ -208,6 +209,15 @@ void ARswHeroCharacter::Input_PickUpStonesStarted(const FInputActionValue& Input
 		RswGameplayTags::Player_Event_ConsumeStones,
 		Data
 	);
+}
+
+void ARswHeroCharacter::Input_EnterDoorStarted(const FInputActionValue& InputActionValue)
+{
+	Debug::Print(TEXT("Input_EnterDoorStarted called"));
+	if (EnterDoorDelegate.IsBound())
+	{
+		EnterDoorDelegate.Broadcast();
+	}
 }
 
 void ARswHeroCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
