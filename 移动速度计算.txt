@@ -1,0 +1,51 @@
+##### page：
+start:49.2,  
+time:0.36
+
+end:-14
+time:1.01
+
+distance = 63
+time = 0.65
+
+speed = 96 算100
+playrate = 150 / 100 = 1.5
+
+##### page left:
+start:0
+time:0.37
+
+end:-57
+time: 1.03
+
+distance: 57
+time 0.66
+speed = 86
+playrate = 120 / 86 = 1.4
+
+
+#### page run
+start:-38
+time:0.21
+
+end:24
+time: 0.45
+
+distance: 62
+time 0.24
+speed = 170
+playrate = 170 * 1.5 = 255
+
+
+### archer run
+start:30
+time:0.31
+
+end:-50
+time: 0.6
+
+distance: 80
+time 0.29
+speed = 290
+
+
