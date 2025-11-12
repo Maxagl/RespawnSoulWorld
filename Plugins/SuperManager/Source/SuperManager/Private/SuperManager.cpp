@@ -494,11 +494,11 @@ void FSuperManagerModule::RefreshSceneOutliner()
 	FLevelEditorModule& LevelEditorModule =
 		FModuleManager::LoadModuleChecked<FLevelEditorModule>(TEXT("LevelEditor"));
 
-	TSharedPtr<ISceneOutliner> SceneOutliner = LevelEditorModule.GetFirstLevelEditor()->GetSceneOutliner();
+	TWeakPtr<ISceneOutliner> SceneOutliner = LevelEditorModule.GetFirstLevelEditor()->GetAllSceneOutliners()[0];
 
-	if (SceneOutliner.IsValid())
+	if (SceneOutliner.IsValid() && SceneOutliner.Pin().IsValid())
 	{
-		SceneOutliner->FullRefresh();
+		SceneOutliner.Pin()->FullRefresh();
 	}
 }
 bool FSuperManagerModule::CheckIsActorSelectionLocked(AActor* ActorToProcess)
