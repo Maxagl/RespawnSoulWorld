@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "AbilitySystem/RswAbilitySystemComponent.h"
-#include "AbilitySystem/Abilities/RswHeroGameplayAbility.h"
+
 #include "AbilitySystem/Abilities/HeroGameplayAbility_RingOfGust.h"
+#include "AbilitySystem/Abilities/RswHeroGameplayAbility.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "RswGameplayTags.h"
 
@@ -16,7 +16,8 @@ void URswAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInp
 
     for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
     {
-        if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag)) continue;
+        if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag))
+            continue;
 
         if (InInputTag.MatchesTag(RswGameplayTags::InputTag_Toggleable))
         {
@@ -56,10 +57,8 @@ void URswAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InIn
     }
 }
 
-
 void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroAbilitySet>& InDefaultWeaponAbilities, const TArray<FRswHeroSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
 {
-
     if (InDefaultWeaponAbilities.IsEmpty())
     {
         return;
@@ -67,7 +66,8 @@ void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroA
 
     for (const FRswHeroAbilitySet& AbilitySet : InDefaultWeaponAbilities)
     {
-        if (!AbilitySet.IsValid()) continue;
+        if (!AbilitySet.IsValid())
+            continue;
 
         FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
         AbilitySpec.SourceObject = GetAvatarActor();
@@ -79,7 +79,8 @@ void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroA
 
     for (const FRswHeroSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
     {
-        if (!AbilitySet.IsValid()) continue;
+        if (!AbilitySet.IsValid())
+            continue;
 
         FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
         AbilitySpec.SourceObject = GetAvatarActor();
@@ -88,10 +89,9 @@ void URswAbilitySystemComponent::GrantHeroWeaponAbilities(const TArray<FRswHeroA
 
         OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
     }
-
 }
 
-void URswAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(ref)TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)
+void URswAbilitySystemComponent::RemovedGrantedHeroWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove)
 {
     if (InSpecHandlesToRemove.IsEmpty())
     {

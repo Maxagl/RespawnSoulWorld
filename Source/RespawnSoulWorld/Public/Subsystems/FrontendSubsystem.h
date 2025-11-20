@@ -6,8 +6,16 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FrontendSubsystem.generated.h"
 
+struct FGameplayTag;
 
 class URswPrimaryLayout;
+class URswActivatableWidgetBase;
+
+enum class EAsyncPushWidgetState : uint8
+{
+	OnCreatedBeforePush,
+	AfterPush
+};
 
 UCLASS()
 class RESPAWNSOULWORLD_API UFrontendSubsystem : public UGameInstanceSubsystem
@@ -23,6 +31,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RegisterCreatedPrimaryLayoutWidget(URswPrimaryLayout* InCreatedWidget);
+
+	void PushSoftWidgetToStackAynsc(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<URswActivatableWidgetBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, URswActivatableWidgetBase*)> AysncPushStateCallback);
 
 private:
 	UPROPERTY(Transient)

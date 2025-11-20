@@ -1,9 +1,12 @@
 // Zhaobang Liu All Rights Reserved
 
-
 #include "Subsystems/FrontendSubsystem.h"
 
 #include "RswDebugHelper.h"
+#include "Engine/AssetManager.h"
+#include "Widgets/RswPrimaryLayout.h"
+#include "Widgets/RswActivatableWidgetBase.h"
+#include "Widgets/CommonActivatableWidgetContainer.h"
 
 UFrontendSubsystem* UFrontendSubsystem::Get(const UObject* WorldContextObject)
 {
@@ -23,7 +26,6 @@ bool UFrontendSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	{
 		TArray<UClass*> FoundClasses;
 		GetDerivedClasses(GetClass(), FoundClasses);
-
 		return FoundClasses.IsEmpty();
 	}
 
@@ -37,4 +39,24 @@ void UFrontendSubsystem::RegisterCreatedPrimaryLayoutWidget(URswPrimaryLayout* I
 	CreatedPrimaryLayout = InCreatedWidget;
 
 	Debug::Print(TEXT("Primary Layout Widget Stored"));
+}
+
+void UFrontendSubsystem::PushSoftWidgetToStackAynsc(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<URswActivatableWidgetBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, URswActivatableWidgetBase*)> AysncPushStateCallback)
+{
+	check(!InSoftWidgetClass.IsNull());
+
+	UAssetManager::Get().GetStreamableManager().RequestAsyncLoad(InSoftWidgetClass.ToSoftObjectPath(), FStreamableDelegate::CreateLambda([InSoftWidgetClass, this, InWidgetStackTag, AysncPushStateCallback]() {
+		UClass* LoadedWidgetClass = InSoftWidgetClass.Get();
+
+		check(LoadedWidgetClass && CreatedPrimaryLayout);
+
+		UCommonActivatableWidgetContainerBase* FoundWidgetStack = CreatedPrimaryLayout->FindWidgetStackByTag(InWidgetStackTag);
+
+		URswActivatableWidgetBase* CreatedWidget = FoundWidgetStack->AddWidget<URswActivatableWidgetBase>(
+			LoadedWidgetClass, [AysncPushStateCallback](URswActivatableWidgetBase& CreatedWidgetInstance) {
+				AysncPushStateCallback(EAsyncPushWidgetState::OnCreatedBeforePush, &CreatedWidgetInstance);
+			});
+
+		AysncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
+	}));
 }
