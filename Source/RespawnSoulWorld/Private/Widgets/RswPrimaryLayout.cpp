@@ -10,7 +10,7 @@ UCommonActivatableWidgetContainerBase* URswPrimaryLayout::FindWidgetStackByTag(c
 {
 	checkf(RegisteredWidgetStackMap.Contains(InTag), TEXT("Can not find the widget stack by the tag %s"), *InTag.ToString());
 
-	return nullptr;
+	return RegisteredWidgetStackMap.FindRef(InTag);
 }
 
 void URswPrimaryLayout::RegisterWidgetStack(FGameplayTag InStackTag, UCommonActivatableWidgetContainerBase* InStack)
