@@ -57,6 +57,6 @@ void UFrontendSubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidget
 				AysncPushStateCallback(EAsyncPushWidgetState::OnCreatedBeforePush, &CreatedWidgetInstance);
 			});
 
-		// AysncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
+		AysncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
 	}));
 }
