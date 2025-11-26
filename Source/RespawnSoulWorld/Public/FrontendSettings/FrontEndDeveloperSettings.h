@@ -5,12 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DeveloperSettings.h"
-#include "FrontEndDeveloperSettings.generated.h"
+#include "FrontendDeveloperSettings.generated.h"
 
 class URswActivatableWidgetBase;
 
 UCLASS(Config = Game, defaultconfig, meta = (DisplayName = "Frontend UI Settings"))
-class RESPAWNSOULWORLD_API UFrontEndDeveloperSettings : public UDeveloperSettings
+class RESPAWNSOULWORLD_API UFrontendDeveloperSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 
