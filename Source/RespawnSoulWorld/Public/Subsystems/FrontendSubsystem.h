@@ -9,6 +9,7 @@
 struct FGameplayTag;
 
 class URswPrimaryLayout;
+class URswCommonButtonBase;
 class URswActivatableWidgetBase;
 
 enum class EAsyncPushWidgetState : uint8
@@ -17,12 +18,17 @@ enum class EAsyncPushWidgetState : uint8
 	AfterPush
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnButtonDescriptionTextUpdatedDelegate, URswCommonButtonBase*, BroadcastingButton, FText, DescriptionText);
+
 UCLASS()
 class RESPAWNSOULWORLD_API UFrontendSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnButtonDescriptionTextUpdatedDelegate OnButtonDescriptionTextUpdated;
+
 	static UFrontendSubsystem* Get(const UObject* WorldContextObject);
 
 	//~ Begin USubsystem Interface
@@ -32,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RegisterCreatedPrimaryLayoutWidget(URswPrimaryLayout* InCreatedWidget);
 
-    // InSoftWidgetClass加载完成--> AddWidget（创建Widget实例并调用回调）--> AysncPushStateCallback
+	// InSoftWidgetClass加载完成--> AddWidget（创建Widget实例并调用回调）--> AysncPushStateCallback
 	void PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<URswActivatableWidgetBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, URswActivatableWidgetBase*)> AysncPushStateCallback);
 
 private:
