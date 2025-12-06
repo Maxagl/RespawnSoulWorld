@@ -16,7 +16,8 @@ public class RespawnSoulWorld : ModuleRules
         "MotionWarping",
         "Niagara",
         "NavigationSystem",
-        "MoviePlayer"
+        "MoviePlayer",
+        "CommonInput"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

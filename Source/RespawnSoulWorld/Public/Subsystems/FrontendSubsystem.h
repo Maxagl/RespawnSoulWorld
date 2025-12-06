@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RswTypes/RswEnumTypes.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "FrontendSubsystem.generated.h"
 
@@ -40,6 +41,8 @@ public:
 
 	// InSoftWidgetClass加载完成--> AddWidget（创建Widget实例并调用回调）--> AysncPushStateCallback
 	void PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<URswActivatableWidgetBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, URswActivatableWidgetBase*)> AysncPushStateCallback);
+
+    void PushConfirmScreenToModalStackAynsc(EConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMsg, TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback);
 
 private:
 	UPROPERTY(Transient)

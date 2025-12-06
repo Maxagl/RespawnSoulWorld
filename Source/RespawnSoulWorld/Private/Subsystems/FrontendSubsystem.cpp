@@ -3,8 +3,11 @@
 #include "Subsystems/FrontendSubsystem.h"
 
 #include "RswDebugHelper.h"
+#include "RswGameplayTags.h"
 #include "Engine/AssetManager.h"
+#include "FrontendFunctionLibrary.h"
 #include "Widgets/RswPrimaryLayout.h"
+#include "Widgets/RswWidget_ConfirmScreen.h"
 #include "Widgets/RswActivatableWidgetBase.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 
@@ -52,6 +55,7 @@ void UFrontendSubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidget
 
 		UCommonActivatableWidgetContainerBase* FoundWidgetStack = CreatedPrimaryLayout->FindWidgetStackByTag(InWidgetStackTag);
 
+        // 所有的异步最后都回到了这个UCommonActivatableWidgetContainerBase 的 AddWidget 这个函数
 		URswActivatableWidgetBase* CreatedWidget = FoundWidgetStack->AddWidget<URswActivatableWidgetBase>(
 			LoadedWidgetClass, [AysncPushStateCallback](URswActivatableWidgetBase& CreatedWidgetInstance) {
 				AysncPushStateCallback(EAsyncPushWidgetState::OnCreatedBeforePush, &CreatedWidgetInstance);
@@ -59,4 +63,43 @@ void UFrontendSubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidget
 
 		AysncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
 	}));
+}
+
+void UFrontendSubsystem::PushConfirmScreenToModalStackAynsc(EConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMsg, TFunction<void(EConfirmScreenButtonType)> ButtonClickedCallback)
+{
+	UConfirmScreenInfoObject* CreatedInfoObject = nullptr;
+
+	switch (InScreenType)
+	{
+		case EConfirmScreenType::Ok:
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateOKScreen(InScreenTitle, InScreenMsg);
+			break;
+
+		case EConfirmScreenType::YesNo:
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateYesNoScreen(InScreenTitle, InScreenMsg);
+			break;
+
+		case EConfirmScreenType::OKCancel:
+			CreatedInfoObject = UConfirmScreenInfoObject::CreateOkCancelScreen(InScreenTitle, InScreenMsg);
+			break;
+
+		case EConfirmScreenType::Unknown:
+			break;
+
+		default:
+			break;
+	}
+
+	check(CreatedInfoObject);
+
+	PushSoftWidgetToStackAsync(
+		RswGameplayTags::Frontend_WidgetStack_Modal,
+		UFrontendFunctionLibrary::GetFrontendSoftWidgetClassByTag(RswGameplayTags::Frontend_Widget_ConfirmScreen),
+		[CreatedInfoObject, ButtonClickedCallback](EAsyncPushWidgetState InPushState, URswActivatableWidgetBase* PushedWidget) {
+			if (InPushState == EAsyncPushWidgetState::OnCreatedBeforePush)
+			{
+				URswWidget_ConfirmScreen* CreatedConfirmScreen = CastChecked<URswWidget_ConfirmScreen>(PushedWidget);
+				CreatedConfirmScreen->InitConfirmScreen(CreatedInfoObject, ButtonClickedCallback);
+			}
+		});
 }
