@@ -4,6 +4,9 @@
 
 #include "ICommonInputModule.h"
 #include "Input/CommonUIInputTypes.h"
+#include "Widgets/Options/OptionsDataRegistry.h"
+#include "Widgets/Components/RswTabListWidgetBase.h"
+#include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
 #include "RswDebugHelper.h"
 
@@ -25,6 +28,41 @@ void URswWidget_OptionScreen::NativeOnInitialized()
 			ICommonInputModule::GetSettings().GetDefaultBackAction(),
 			true,
 			FSimpleDelegate::CreateUObject(this, &ThisClass::OnBackBoundActionTriggered)));
+}
+
+void URswWidget_OptionScreen::NativeOnActivated()
+{
+	Super::NativeOnActivated();
+
+	for (UListDataObject_Collection* TabCollection : GetOrCreateDataRegistry()->GetRegisteredOptionsTabCollections())
+	{
+		if (!TabCollection)
+		{
+			continue;
+		}
+
+		const FName TabID = TabCollection->GetDataID();
+
+		if (TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabID) != nullptr)
+		{
+			continue;
+		}
+
+		TabListWidget_OptionsTabs->RequestRegisterTab(TabID, TabCollection->GetDataDisplayName());
+	}
+}
+
+UOptionsDataRegistry* URswWidget_OptionScreen::GetOrCreateDataRegistry()
+{
+	if (!CreatedOwningDataRegistry)
+	{
+		CreatedOwningDataRegistry = NewObject<UOptionsDataRegistry>();
+		CreatedOwningDataRegistry->InitOptionsDataRegistry(GetOwningLocalPlayer());
+	}
+
+	checkf(CreatedOwningDataRegistry, TEXT("Data registry for options screen is not valid"));
+
+	return CreatedOwningDataRegistry;
 }
 
 void URswWidget_OptionScreen::OnResetBoundActionTriggered()

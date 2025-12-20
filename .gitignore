@@ -6,6 +6,8 @@ Content
 Plugins/KawaiiPhysics/
 Plugins/VRM4U/
 Plugins/Developer/
+Plugins/VisualStudioTools/
+.idea/
 .vscode
 .vs
 *.VC.db

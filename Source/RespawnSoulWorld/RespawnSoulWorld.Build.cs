@@ -17,7 +17,11 @@ public class RespawnSoulWorld : ModuleRules
         "Niagara",
         "NavigationSystem",
         "MoviePlayer",
-        "CommonInput"
+        "GameplayAbilities",
+        "CommonInput",
+        "CommonUI",
+        "AIModule",
+        "DeveloperSettings"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -9,31 +9,19 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine",
-				"EnhancedInput",
-				"GameplayAbilities",
-				"UMG",
-				"AIModule",
-				"CommonUI",
-				"DeveloperSettings"
+				"CoreUObject"
 			]
 		},
 		{
 			"Name": "K2NodeModule",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "PreLoadingScreen",
-			"AdditionalDependencies": [
-				"BlueprintGraph"
-			]
+			"LoadingPhase": "PreLoadingScreen"
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
-			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			]
+			"Enabled": true
 		},
 		{
 			"Name": "GameplayAbilities",
@@ -54,6 +42,13 @@
 		{
 			"Name": "CommonUI",
 			"Enabled": true
+		},
+		{
+			"Name": "VisualStudioTools",
+			"Enabled": true,
+			"SupportedTargetPlatforms": [
+				"Win64"
+			]
 		}
 	]
 }

@@ -5,6 +5,16 @@
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Components/RswCommonButtonBase.h"
 
+void URswTabListWidgetBase::RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName)
+{
+	RegisterTab(InTabID, TabButtonEntryWidgetClass, nullptr);
+
+	if (URswCommonButtonBase* FoundButton = Cast<URswCommonButtonBase>(GetTabButtonBaseByID(InTabID)))
+	{
+		FoundButton->SetButtonText(InTabDisplayName);
+	}
+}
+
 #if WITH_EDITOR
 void URswTabListWidgetBase::ValidateCompiledDefaults(IWidgetCompilerLog& CompileLog) const
 {
