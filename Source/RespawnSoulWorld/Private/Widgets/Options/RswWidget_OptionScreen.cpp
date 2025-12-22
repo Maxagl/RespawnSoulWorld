@@ -28,6 +28,8 @@ void URswWidget_OptionScreen::NativeOnInitialized()
 			ICommonInputModule::GetSettings().GetDefaultBackAction(),
 			true,
 			FSimpleDelegate::CreateUObject(this, &ThisClass::OnBackBoundActionTriggered)));
+
+	TabListWidget_OptionsTabs->OnTabSelected.AddUniqueDynamic(this, &ThisClass::OnOptionsTabSelected);
 }
 
 void URswWidget_OptionScreen::NativeOnActivated()
@@ -73,4 +75,9 @@ void URswWidget_OptionScreen::OnResetBoundActionTriggered()
 void URswWidget_OptionScreen::OnBackBoundActionTriggered()
 {
 	DeactivateWidget();
+}
+
+void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
+{
+	Debug::Print(FString::Printf(TEXT("Options tab selected: %s"), *TabId.ToString()));
 }
