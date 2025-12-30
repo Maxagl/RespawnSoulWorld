@@ -6,6 +6,7 @@
 #include "Widgets/RswActivatableWidgetBase.h"
 #include "RswWidget_OptionScreen.generated.h"
 
+class URswCommonListView;
 class UOptionsDataRegistry;
 class URswTabListWidgetBase;
 
@@ -32,12 +33,15 @@ private:
 	void OnResetBoundActionTriggered();
 	void OnBackBoundActionTriggered();
 
-    UFUNCTION()
+	UFUNCTION()
 	void OnOptionsTabSelected(FName TabId);
 
 	//***** Bound Widgets ***** //
 	UPROPERTY(meta = (BindWidget))
 	URswTabListWidgetBase* TabListWidget_OptionsTabs;
+
+	UPROPERTY(meta = (BindWidget))
+	URswCommonListView* ListView_OptionsContent;
 	//***** Bound Widgets ***** //
 
 	// Handle the creation of data in the options screen. Direct access to this variable is forbidden

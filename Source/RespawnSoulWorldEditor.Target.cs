@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class RespawnSoulWorldEditorTarget : TargetRules
 {
-	public RespawnSoulWorldEditorTarget( TargetInfo Target) : base(Target)
+    [System.Obsolete]
+    public RespawnSoulWorldEditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;

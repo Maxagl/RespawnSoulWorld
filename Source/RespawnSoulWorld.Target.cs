@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 public class RespawnSoulWorldTarget : TargetRules
 {
-	public RespawnSoulWorldTarget(TargetInfo Target) : base(Target)
+    [System.Obsolete]
+    public RespawnSoulWorldTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
