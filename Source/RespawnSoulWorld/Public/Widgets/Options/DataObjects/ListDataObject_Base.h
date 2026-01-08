@@ -19,7 +19,7 @@
 /**
  *
  */
-UCLASS()
+UCLASS(Abstract)
 class RESPAWNSOULWORLD_API UListDataObject_Base : public UObject
 {
 	GENERATED_BODY()

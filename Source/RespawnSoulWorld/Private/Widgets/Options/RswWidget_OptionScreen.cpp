@@ -6,6 +6,7 @@
 #include "Input/CommonUIInputTypes.h"
 #include "Widgets/Options/OptionsDataRegistry.h"
 #include "Widgets/Components/RswTabListWidgetBase.h"
+#include "Widgets/Components/RswCommonListView.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
 #include "RswDebugHelper.h"
@@ -79,5 +80,14 @@ void URswWidget_OptionScreen::OnBackBoundActionTriggered()
 
 void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 {
-	Debug::Print(FString::Printf(TEXT("Options tab selected: %s"), *TabId.ToString()));
+	TArray<UListDataObject_Base*> FoundListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
+
+	ListView_OptionsContent->SetListItems(FoundListSourceItems);
+	ListView_OptionsContent->RequestRefresh();
+
+	if (ListView_OptionsContent->GetNumItems() != 0)
+	{
+		ListView_OptionsContent->NavigateToIndex(0);
+		ListView_OptionsContent->SetSelectedIndex(0);
+	}
 }
