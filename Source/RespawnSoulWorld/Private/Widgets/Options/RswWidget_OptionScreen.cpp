@@ -82,6 +82,7 @@ void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 {
 	TArray<UListDataObject_Base*> FoundListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
 
+    // 这里的listview设置的Items 对应到OnGenerateEntryWidgetInternal里面的Item
 	ListView_OptionsContent->SetListItems(FoundListSourceItems);
 	ListView_OptionsContent->RequestRefresh();
 
