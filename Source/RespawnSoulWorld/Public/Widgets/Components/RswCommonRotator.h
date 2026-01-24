@@ -7,11 +7,13 @@
 #include "RswCommonRotator.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class RESPAWNSOULWORLD_API URswCommonRotator : public UCommonRotator
 {
 	GENERATED_BODY()
-	
+
+public:
+	void SetSelectedOptionByText(const FText& InTextOption);
 };

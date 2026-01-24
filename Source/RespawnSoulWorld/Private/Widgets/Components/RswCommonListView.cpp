@@ -13,7 +13,7 @@ UUserWidget& URswCommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TS
 	{
 		return Super::OnGenerateEntryWidgetInternal(Item, DesiredEntryClass, OwnerTable);
 	}
-
+    // 覆盖Editor里面设置的EntryWidgetClass
 	if (TSubclassOf<UWidget_ListEntry_Base> FoundWidgetClass = DataListEntryMapping->FindEntryWidgetClassByDataObject(CastChecked<UListDataObject_Base>(Item)))
 	{
 		return GenerateTypedEntry<UWidget_ListEntry_Base>(FoundWidgetClass, OwnerTable);

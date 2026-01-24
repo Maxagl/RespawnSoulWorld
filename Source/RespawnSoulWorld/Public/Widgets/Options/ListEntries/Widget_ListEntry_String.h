@@ -8,6 +8,7 @@
 
 class URswCommonRotator;
 class URswCommonButtonBase;
+class UListDataObject_String;
 
 /**
  *
@@ -16,6 +17,15 @@ UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class RESPAWNSOULWORLD_API UWidget_ListEntry_String : public UWidget_ListEntry_Base
 {
 	GENERATED_BODY()
+
+protected:
+	//~ Begin UUserWidget Interface
+	virtual void NativeOnInitialized() override;
+	//~ End UUserWidget Interface
+
+	//~ Begin UWidget_ListEntry_Base Interface
+	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject) override;
+	//~ End UWidget_ListEntry_Base Interface
 
 private:
 	//***** Bound Widgets ***** //
@@ -28,4 +38,10 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	URswCommonButtonBase* CommonButton_NextOption;
 	//***** Bound Widgets ***** //
+
+	UPROPERTY(Transient)
+	UListDataObject_String* CachedOwningStringDataObject;
+
+	void OnPreviousOptionButtonClicked();
+	void OnNextOptionButtonClicked();
 };

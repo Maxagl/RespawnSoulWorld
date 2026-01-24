@@ -15,7 +15,7 @@ void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPl
 
 TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const
 {
-    // 我要死了，这什么鬼指针
+	// 我要死了，这什么鬼指针
 	UListDataObject_Collection* const* FoundTabCollectionPtr = RegisteredOptionsTabCollections.FindByPredicate(
 		[InSelectedTabID](UListDataObject_Collection* AvailableTabCollection) -> bool {
 			return AvailableTabCollection->GetDataID() == InSelectedTabID;
@@ -38,7 +38,11 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* GameDifficulty = NewObject<UListDataObject_String>();
 		GameDifficulty->SetDataID(FName("GameDifficulty"));
-		GameDifficulty->SetDataDisplayName(FText::FromString("Difficulty"));
+		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("Difficulty")));
+		GameDifficulty->AddDynamicOption(TEXT("Easy"), FText::FromString(TEXT("Easy")));
+		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("Normal")));
+		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("Hard")));
+		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("Very Hard")));
 
 		GameplayTabCollection->AddChildListData(GameDifficulty);
 	}
@@ -47,7 +51,7 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
 		TestItem->SetDataID(FName("TestItem"));
-		TestItem->SetDataDisplayName(FText::FromString("Test Item"));
+		TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Item")));
 
 		GameplayTabCollection->AddChildListData(TestItem);
 	}
