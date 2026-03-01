@@ -22,6 +22,7 @@ public class RespawnSoulWorld : ModuleRules
         "CommonUI",
         "AIModule",
         "DeveloperSettings",
+        "PropertyPath",
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

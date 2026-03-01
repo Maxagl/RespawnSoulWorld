@@ -16,6 +16,8 @@ class RESPAWNSOULWORLD_API UListDataObject_String : public UListDataObject_Value
 
 public:
 	void AddDynamicOption(const FString& InStringValue, const FText& InDisplayText);
+	void AdvanceToNextOption();
+	void BackToPreviousOption();
 
 	FORCEINLINE const TArray<FText>& GetAvailableOptionsTextArray() const { return AvailableOptionsTextArray; }
 	FORCEINLINE FText				 GetCurrentDisplayText() const { return CurrentDisplayText; }
