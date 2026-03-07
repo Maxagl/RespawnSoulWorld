@@ -16,6 +16,14 @@ class RESPAWNSOULWORLD_API URswGameUserSettings : public UGameUserSettings
 public:
 	static URswGameUserSettings* Get();
 
+    //***** Gameplay Collection Tab ***** //
+	UFUNCTION()
+	FString GetCurrentGameDifficulty() const { return CurrentGameDifficulty; }
+
+	UFUNCTION()
+	void SetCurrentGameDifficulty(const FString& InNewDifficulty) { CurrentGameDifficulty = InNewDifficulty; }
+	//***** Gameplay Collection Tab ***** //
+
 private:
 	UPROPERTY(Config)
 	FString CurrentGameDifficulty;

@@ -5,8 +5,9 @@
 #include "ICommonInputModule.h"
 #include "Input/CommonUIInputTypes.h"
 #include "Widgets/Options/OptionsDataRegistry.h"
-#include "Widgets/Components/RswTabListWidgetBase.h"
+#include "FrontendSettings/RswGameUserSettings.h"
 #include "Widgets/Components/RswCommonListView.h"
+#include "Widgets/Components/RswTabListWidgetBase.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
 #include "RswDebugHelper.h"
@@ -31,6 +32,9 @@ void URswWidget_OptionScreen::NativeOnInitialized()
 			FSimpleDelegate::CreateUObject(this, &ThisClass::OnBackBoundActionTriggered)));
 
 	TabListWidget_OptionsTabs->OnTabSelected.AddUniqueDynamic(this, &ThisClass::OnOptionsTabSelected);
+
+    ListView_OptionsContent->OnItemIsHoveredChanged().AddUObject(this, &ThisClass::OnListViewItemHovered);
+	ListView_OptionsContent->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnListViewItemSelected);
 }
 
 void URswWidget_OptionScreen::NativeOnActivated()
@@ -53,6 +57,13 @@ void URswWidget_OptionScreen::NativeOnActivated()
 
 		TabListWidget_OptionsTabs->RequestRegisterTab(TabID, TabCollection->GetDataDisplayName());
 	}
+}
+
+void URswWidget_OptionScreen::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	URswGameUserSettings::Get()->ApplySettings(true);
 }
 
 UOptionsDataRegistry* URswWidget_OptionScreen::GetOrCreateDataRegistry()
@@ -82,7 +93,7 @@ void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 {
 	TArray<UListDataObject_Base*> FoundListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
 
-    // 这里的listview设置的Items 对应到OnGenerateEntryWidgetInternal里面的Item
+	// 这里的listview设置的Items 对应到OnGenerateEntryWidgetInternal里面的Item
 	ListView_OptionsContent->SetListItems(FoundListSourceItems);
 	ListView_OptionsContent->RequestRefresh();
 
@@ -90,5 +101,32 @@ void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 	{
 		ListView_OptionsContent->NavigateToIndex(0);
 		ListView_OptionsContent->SetSelectedIndex(0);
+
 	}
+}
+
+void URswWidget_OptionScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered)
+{
+	if (!InHoveredItem)
+	{
+		return;
+	}
+
+	const FString DebugString =
+		CastChecked<UListDataObject_Base>(InHoveredItem)->GetDataDisplayName().ToString() + TEXT(" was ") + (bWasHovered ? TEXT("hovered") : TEXT("unhovered"));
+
+	Debug::Print(DebugString);
+}
+
+void URswWidget_OptionScreen::OnListViewItemSelected(UObject* InSelectedItem)
+{
+	if (!InSelectedItem)
+	{
+		return;
+	}
+
+	const FString DebugString =
+		CastChecked<UListDataObject_Base>(InSelectedItem)->GetDataDisplayName().ToString() + TEXT(" was selected");
+
+	Debug::Print(DebugString);
 }

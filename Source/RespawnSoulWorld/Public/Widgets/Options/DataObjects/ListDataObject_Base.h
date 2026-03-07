@@ -27,7 +27,7 @@ class RESPAWNSOULWORLD_API UListDataObject_Base : public UObject
 
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UListDataObject_Base*, EOptionsListDataModifyReason)
-	FOnListDataModifiedDelegate OnListDataModified;
+		FOnListDataModifiedDelegate OnListDataModified;
 
 	LIST_DATA_ACCESSOR(FName, DataID)
 	LIST_DATA_ACCESSOR(FText, DataDisplayName)
@@ -42,11 +42,13 @@ public:
 	virtual TArray<UListDataObject_Base*> GetChildListData() const { return TArray<UListDataObject_Base*>(); }
 	virtual bool						  HasAnyChildListData() const { return false; }
 
+	void SetShouldApplySettingsImmediately(bool bShouldApplyRightAway) { bShouldApplyChangeImmediatly = bShouldApplyRightAway; }
+
 protected:
 	// Empty in base class. The child classes should override it to handle the initialization needed accrodingly
 	virtual void OnDataObjectInitialized();
 
-    virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionsListDataModifyReason ModifyReason = EOptionsListDataModifyReason::DirectlyModified);
+	virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionsListDataModifyReason ModifyReason = EOptionsListDataModifyReason::DirectlyModified);
 
 private:
 	FName					   DataID;
@@ -57,4 +59,6 @@ private:
 
 	UPROPERTY(Transient)
 	UListDataObject_Base* ParentData;
+
+	bool bShouldApplyChangeImmediatly = false;
 };
