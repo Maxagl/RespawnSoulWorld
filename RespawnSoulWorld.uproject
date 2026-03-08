@@ -11,7 +11,8 @@
 			"AdditionalDependencies": [
 				"CoreUObject",
 				"CommonUI",
-				"Engine"
+				"Engine",
+				"UMG"
 			]
 		},
 		{

@@ -24,6 +24,7 @@ void UWidget_ListEntry_String::OnOwningListDataObjectSet(UListDataObject_Base* I
 
 	CommonRotator_AvailableOptions->PopulateTextLabels(CachedOwningStringDataObject->GetAvailableOptionsTextArray());
 	CommonRotator_AvailableOptions->SetSelectedOptionByText(CachedOwningStringDataObject->GetCurrentDisplayText());
+	CommonRotator_AvailableOptions->OnClicked().AddLambda([this]() { SelectThisEntryWidget(); });
 }
 
 void UWidget_ListEntry_String::OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionsListDataModifyReason ModifyReason)
@@ -40,6 +41,8 @@ void UWidget_ListEntry_String::OnPreviousOptionButtonClicked()
 	{
 		CachedOwningStringDataObject->BackToPreviousOption();
 	}
+
+    SelectThisEntryWidget();
 }
 
 void UWidget_ListEntry_String::OnNextOptionButtonClicked()
@@ -49,4 +52,6 @@ void UWidget_ListEntry_String::OnNextOptionButtonClicked()
 	{
 		CachedOwningStringDataObject->AdvanceToNextOption();
 	}
+
+    SelectThisEntryWidget();
 }

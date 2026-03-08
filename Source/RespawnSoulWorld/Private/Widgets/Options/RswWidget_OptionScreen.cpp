@@ -8,6 +8,8 @@
 #include "FrontendSettings/RswGameUserSettings.h"
 #include "Widgets/Components/RswCommonListView.h"
 #include "Widgets/Components/RswTabListWidgetBase.h"
+#include "Widgets/Options/Widget_OptionsDetailView.h"
+#include "Widgets/Options/ListEntries/Widget_ListEntry_Base.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
 #include "RswDebugHelper.h"
@@ -33,7 +35,7 @@ void URswWidget_OptionScreen::NativeOnInitialized()
 
 	TabListWidget_OptionsTabs->OnTabSelected.AddUniqueDynamic(this, &ThisClass::OnOptionsTabSelected);
 
-    ListView_OptionsContent->OnItemIsHoveredChanged().AddUObject(this, &ThisClass::OnListViewItemHovered);
+	ListView_OptionsContent->OnItemIsHoveredChanged().AddUObject(this, &ThisClass::OnListViewItemHovered);
 	ListView_OptionsContent->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnListViewItemSelected);
 }
 
@@ -101,7 +103,6 @@ void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 	{
 		ListView_OptionsContent->NavigateToIndex(0);
 		ListView_OptionsContent->SetSelectedIndex(0);
-
 	}
 }
 
@@ -112,10 +113,27 @@ void URswWidget_OptionScreen::OnListViewItemHovered(UObject* InHoveredItem, bool
 		return;
 	}
 
-	const FString DebugString =
-		CastChecked<UListDataObject_Base>(InHoveredItem)->GetDataDisplayName().ToString() + TEXT(" was ") + (bWasHovered ? TEXT("hovered") : TEXT("unhovered"));
+	UWidget_ListEntry_Base* HoveredEntryWidget = ListView_OptionsContent->GetEntryWidgetFromItem<UWidget_ListEntry_Base>(InHoveredItem);
 
-	Debug::Print(DebugString);
+	check(HoveredEntryWidget);
+
+	HoveredEntryWidget->NativeOnListEntryWidgetHovered(bWasHovered);
+
+	if (bWasHovered)
+	{
+		DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+			CastChecked<UListDataObject_Base>(InHoveredItem),
+			TryGetEntryWidgetClassName(InHoveredItem));
+	}
+	else
+	{
+		if (UListDataObject_Base* SelectedItem = ListView_OptionsContent->GetSelectedItem<UListDataObject_Base>())
+		{
+			DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+				SelectedItem,
+				TryGetEntryWidgetClassName(SelectedItem));
+		}
+	}
 }
 
 void URswWidget_OptionScreen::OnListViewItemSelected(UObject* InSelectedItem)
@@ -125,8 +143,17 @@ void URswWidget_OptionScreen::OnListViewItemSelected(UObject* InSelectedItem)
 		return;
 	}
 
-	const FString DebugString =
-		CastChecked<UListDataObject_Base>(InSelectedItem)->GetDataDisplayName().ToString() + TEXT(" was selected");
+	DetailsView_ListEntryInfo->UpdateDetailsViewInfo(
+		CastChecked<UListDataObject_Base>(InSelectedItem),
+		TryGetEntryWidgetClassName(InSelectedItem));
+}
 
-	Debug::Print(DebugString);
+FString URswWidget_OptionScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem) const
+{
+	if (UUserWidget* FoundEntryWidget = ListView_OptionsContent->GetEntryWidgetFromItem(InOwningListItem))
+	{
+		return FoundEntryWidget->GetClass()->GetName();
+	}
+
+	return TEXT("Entry Widget Not Valid");
 }

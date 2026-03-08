@@ -9,6 +9,7 @@
 class URswCommonListView;
 class UOptionsDataRegistry;
 class URswTabListWidgetBase;
+class UWidget_OptionsDetailView;
 
 /**
  *
@@ -25,7 +26,7 @@ protected:
 
 	//~ Begin UCommonActivatableWidget Interface
 	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override; 
+	virtual void NativeOnDeactivated() override;
 	//~ End UCommonActivatableWidget Interface
 
 private:
@@ -37,8 +38,10 @@ private:
 	UFUNCTION()
 	void OnOptionsTabSelected(FName TabId);
 
-    void OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered);
+	void OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered);
 	void OnListViewItemSelected(UObject* InSelectedItem);
+
+    FString TryGetEntryWidgetClassName(UObject* InOwningListItem) const;
 
 	//***** Bound Widgets ***** //
 	UPROPERTY(meta = (BindWidget))
@@ -46,6 +49,10 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	URswCommonListView* ListView_OptionsContent;
+
+	UPROPERTY(meta = (BindWidget))
+	UWidget_OptionsDetailView* DetailsView_ListEntryInfo;
+
 	//***** Bound Widgets ***** //
 
 	// Handle the creation of data in the options screen. Direct access to this variable is forbidden
