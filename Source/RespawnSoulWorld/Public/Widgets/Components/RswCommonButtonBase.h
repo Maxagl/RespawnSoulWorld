@@ -17,6 +17,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetButtonText(FText InText);
 
+    UFUNCTION(BlueprintCallable)
+	FText GetButtonDisplayText() const;
+
 private:
 	//**** Bound Widgets ****//
 	UPROPERTY(meta = (BindWidgetOptional))

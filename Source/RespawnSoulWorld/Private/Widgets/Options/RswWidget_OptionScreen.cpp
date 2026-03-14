@@ -4,9 +4,11 @@
 
 #include "ICommonInputModule.h"
 #include "Input/CommonUIInputTypes.h"
+#include "Subsystems/FrontendSubsystem.h"
 #include "Widgets/Options/OptionsDataRegistry.h"
 #include "FrontendSettings/RswGameUserSettings.h"
 #include "Widgets/Components/RswCommonListView.h"
+#include "Widgets/Components/RswCommonButtonBase.h"
 #include "Widgets/Components/RswTabListWidgetBase.h"
 #include "Widgets/Options/Widget_OptionsDetailView.h"
 #include "Widgets/Options/ListEntries/Widget_ListEntry_Base.h"
@@ -83,7 +85,54 @@ UOptionsDataRegistry* URswWidget_OptionScreen::GetOrCreateDataRegistry()
 
 void URswWidget_OptionScreen::OnResetBoundActionTriggered()
 {
-	Debug::Print(TEXT("Reset bound action triggered"));
+	if (ResettableDataArray.IsEmpty())
+	{
+		return;
+	}
+
+	UCommonButtonBase* SelectedTabButton = TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabListWidget_OptionsTabs->GetActiveTab());
+
+	const FString SelectedTabButtonName = CastChecked<URswCommonButtonBase>(SelectedTabButton)->GetButtonDisplayText().ToString();
+
+	UFrontendSubsystem::Get(this)->PushConfirmScreenToModalStackAynsc(
+		EConfirmScreenType::YesNo,
+		FText::FromString(TEXT("Reset")),
+		FText::FromString(TEXT("Are you sure you want to reset all the settings under the ") + SelectedTabButtonName + TEXT(" tab?")),
+		[this](EConfirmScreenButtonType ClickedButtonType) {
+			if (ClickedButtonType != EConfirmScreenButtonType::Confirmed)
+			{
+				return;
+			}
+
+			bIsResettingData = true;
+			bool bHasDataFailedToReset = false;
+
+			for (UListDataObject_Base* DataToReset : ResettableDataArray)
+			{
+				if (!DataToReset)
+				{
+					continue;
+				}
+
+				if (DataToReset->TryResetBackToDefaultValue())
+				{
+					Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" was reset"));
+				}
+				else
+				{
+					bHasDataFailedToReset = true;
+					Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" failed to reset"));
+				}
+			}
+
+			if (!bHasDataFailedToReset)
+			{
+				ResettableDataArray.Empty();
+				RemoveActionBinding(ResetActionHandle);
+			}
+
+			bIsResettingData = false;
+		});
 }
 
 void URswWidget_OptionScreen::OnBackBoundActionTriggered()
@@ -93,6 +142,7 @@ void URswWidget_OptionScreen::OnBackBoundActionTriggered()
 
 void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 {
+	DetailsView_ListEntryInfo->ClearDetailsViewInfo();
 	TArray<UListDataObject_Base*> FoundListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
 
 	// 这里的listview设置的Items 对应到OnGenerateEntryWidgetInternal里面的Item
@@ -103,6 +153,38 @@ void URswWidget_OptionScreen::OnOptionsTabSelected(FName TabId)
 	{
 		ListView_OptionsContent->NavigateToIndex(0);
 		ListView_OptionsContent->SetSelectedIndex(0);
+	}
+
+    	ResettableDataArray.Empty();
+
+	for (UListDataObject_Base* FoundListSourceItem : FoundListSourceItems)
+	{
+		if (!FoundListSourceItem)
+		{
+			continue;
+		}
+
+		if (!FoundListSourceItem->OnListDataModified.IsBoundToObject(this))
+		{
+			FoundListSourceItem->OnListDataModified.AddUObject(this, &ThisClass::OnListViewListDataModified);
+		}
+
+		if (FoundListSourceItem->CanResetBackToDefaultValue())
+		{
+			ResettableDataArray.AddUnique(FoundListSourceItem);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
+	else
+	{
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
 	}
 }
 
@@ -156,4 +238,34 @@ FString URswWidget_OptionScreen::TryGetEntryWidgetClassName(UObject* InOwningLis
 	}
 
 	return TEXT("Entry Widget Not Valid");
+}
+
+void URswWidget_OptionScreen::OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionsListDataModifyReason ModifyReason)
+{
+	if (!ModifiedData || bIsResettingData)
+	{
+		return;
+	}
+
+	if (ModifiedData->CanResetBackToDefaultValue())
+	{
+		ResettableDataArray.AddUnique(ModifiedData);
+
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
+	}
+	else
+	{
+		if (ResettableDataArray.Contains(ModifiedData))
+		{
+			ResettableDataArray.Remove(ModifiedData);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
 }

@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "RswTypes/RswEnumTypes.h"
 #include "Widgets/RswActivatableWidgetBase.h"
 #include "RswWidget_OptionScreen.generated.h"
 
 class URswCommonListView;
+class UListDataObject_Base;
 class UOptionsDataRegistry;
 class URswTabListWidgetBase;
 class UWidget_OptionsDetailView;
@@ -41,7 +43,8 @@ private:
 	void OnListViewItemHovered(UObject* InHoveredItem, bool bWasHovered);
 	void OnListViewItemSelected(UObject* InSelectedItem);
 
-    FString TryGetEntryWidgetClassName(UObject* InOwningListItem) const;
+	FString TryGetEntryWidgetClassName(UObject* InOwningListItem) const;
+	void	OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionsListDataModifyReason ModifyReason);
 
 	//***** Bound Widgets ***** //
 	UPROPERTY(meta = (BindWidget))
@@ -64,4 +67,9 @@ private:
 	FDataTableRowHandle ResetAction;
 
 	FUIActionBindingHandle ResetActionHandle;
+
+	UPROPERTY(Transient)
+	TArray<UListDataObject_Base*> ResettableDataArray;
+
+    bool bIsResettingData = false;
 };

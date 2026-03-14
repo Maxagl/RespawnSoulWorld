@@ -13,6 +13,16 @@ void URswCommonButtonBase::SetButtonText(FText InText)
 	}
 }
 
+FText URswCommonButtonBase::GetButtonDisplayText() const
+{
+	if (CommonTextBlock_ButtonText)
+	{
+		return CommonTextBlock_ButtonText->GetText();
+	}
+
+	return FText();
+}
+
 void URswCommonButtonBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();
