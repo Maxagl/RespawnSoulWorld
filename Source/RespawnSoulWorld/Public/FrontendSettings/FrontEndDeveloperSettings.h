@@ -17,4 +17,7 @@ class RESPAWNSOULWORLD_API UFrontendDeveloperSettings : public UDeveloperSetting
 public:
 	UPROPERTY(Config, EditAnywhere, Category = "Widget Reference", meta = (ForceInlineRow, Categories = "Frontend.Widget"))
 	TMap<FGameplayTag, TSoftClassPtr<URswActivatableWidgetBase>> FrontendWidgetMap;
+
+    UPROPERTY(Config, EditAnywhere, Category = "Options Image Reference", meta = (ForceInlineRow, Categories = "Frontend.Image"))
+	TMap<FGameplayTag, TSoftObjectPtr<UTexture2D>> OptionsScreenSoftImageMap;
 };

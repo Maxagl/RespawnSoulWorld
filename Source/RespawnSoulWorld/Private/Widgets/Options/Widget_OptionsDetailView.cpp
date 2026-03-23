@@ -22,6 +22,10 @@ void UWidget_OptionsDetailView::UpdateDetailsViewInfo(UListDataObject_Base* InDa
 		CommonLazyImage_DescriptionImage->SetBrushFromLazyTexture(InDataObject->GetSoftDescriptionImage());
 		CommonLazyImage_DescriptionImage->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
+    else
+    {
+		CommonLazyImage_DescriptionImage->SetVisibility(ESlateVisibility::Collapsed);
+    }
 
 	CommonRichText_Description->SetText(InDataObject->GetDescriptionRichText());
 

@@ -45,4 +45,6 @@ private:
 
 	void OnPreviousOptionButtonClicked();
 	void OnNextOptionButtonClicked();
+
+	void OnRotatorValueChanged(int32 Value, bool bUserInitiated);
 };

@@ -76,6 +76,27 @@ void UListDataObject_String::BackToPreviousOption()
 	}
 }
 
+void UListDataObject_String::OnRotatorInitiatedValueChange(const FText& InNewSelectedText)
+{
+	const int32 FoundIndex = AvailableOptionsTextArray.IndexOfByPredicate(
+		[InNewSelectedText](const FText& AvailableText) -> bool {
+			return AvailableText.EqualTo(InNewSelectedText);
+		});
+
+	if (FoundIndex != INDEX_NONE && AvailableOptionsStringArray.IsValidIndex(FoundIndex))
+	{
+		CurrentDisplayText = InNewSelectedText;
+		CurrentStringValue = AvailableOptionsStringArray[FoundIndex];
+
+		if (DataDynamicSetter)
+		{
+			DataDynamicSetter->SetValueFromString(CurrentStringValue);
+
+			NotifyListDataModified(this);
+		}
+	}
+}
+
 void UListDataObject_String::OnDataObjectInitialized()
 {
 	if (!AvailableOptionsStringArray.IsEmpty())

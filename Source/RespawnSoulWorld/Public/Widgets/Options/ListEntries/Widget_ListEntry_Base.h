@@ -33,6 +33,7 @@ protected:
 	// 当item 也就是数据备好后干什么，这里是设置名称
 	//~ Begin IUserObjectListEntry Interface
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	virtual void NativeOnEntryReleased() override;
 	//~ End IUserObjectListEntry Interface
 
 

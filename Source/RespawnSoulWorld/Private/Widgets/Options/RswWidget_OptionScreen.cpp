@@ -70,6 +70,19 @@ void URswWidget_OptionScreen::NativeOnDeactivated()
 	URswGameUserSettings::Get()->ApplySettings(true);
 }
 
+UWidget* URswWidget_OptionScreen::NativeGetDesiredFocusTarget() const
+{
+	if (UObject* SelectedObject = ListView_OptionsContent->GetSelectedItem())
+	{
+		if (UUserWidget* SelectedEntryWidget = ListView_OptionsContent->GetEntryWidgetFromItem(SelectedObject))
+		{
+			return SelectedEntryWidget;
+		}
+	}
+
+	return Super::NativeGetDesiredFocusTarget();
+}
+
 UOptionsDataRegistry* URswWidget_OptionScreen::GetOrCreateDataRegistry()
 {
 	if (!CreatedOwningDataRegistry)

@@ -17,4 +17,7 @@ class RESPAWNSOULWORLD_API UFrontendFunctionLibrary : public UBlueprintFunctionL
 public:
 	UFUNCTION(BlueprintPure, Category = "Frontend Function Library", meta = (GameplayTagFilter = "Frontend.Widget"))
 	static TSoftClassPtr<URswActivatableWidgetBase> GetFrontendSoftWidgetClassByTag(FGameplayTag InWidgetTag);
+
+	UFUNCTION(BlueprintPure, Category = "Frontend Function Library")
+	static TSoftObjectPtr<UTexture2D> GetOptionsSoftImageByTag(UPARAM(meta = (Categories = "Frontend.Image")) FGameplayTag InImageTag);
 };
