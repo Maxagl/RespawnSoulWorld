@@ -32,7 +32,47 @@ TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelected
 
 	UListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
 
-	return FoundTabCollection->GetAllChildListData();
+	TArray<UListDataObject_Base*> AllChildListItems;
+
+	for (UListDataObject_Base* ChildListData : FoundTabCollection->GetAllChildListData())
+	{
+		if (!ChildListData)
+		{
+			continue;
+		}
+
+		AllChildListItems.Add(ChildListData);
+
+		if (ChildListData->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(ChildListData, AllChildListItems);
+		}
+	}
+
+	return AllChildListItems;
+}
+
+void UOptionsDataRegistry::FindChildListDataRecursively(UListDataObject_Base* InParentData, TArray<UListDataObject_Base*>& OutFoundChildListData) const
+{
+	if (!InParentData || !InParentData->HasAnyChildListData())
+	{
+		return;
+	}
+
+	for (UListDataObject_Base* SubChildListData : InParentData->GetAllChildListData())
+	{
+		if (!SubChildListData)
+		{
+			continue;
+		}
+
+		OutFoundChildListData.Add(SubChildListData);
+
+		if (SubChildListData->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(SubChildListData, OutFoundChildListData);
+		}
+	}
 }
 
 void UOptionsDataRegistry::InitGameplayCollectionTab()
@@ -79,6 +119,24 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 	UListDataObject_Collection* AudioTabCollection = NewObject<UListDataObject_Collection>();
 	AudioTabCollection->SetDataID(FName("AudioTabCollection"));
 	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("Audio")));
+
+    // Volume Category Collection 嵌套Collection
+	{
+		UListDataObject_Collection* VolumeCategoryCollection = NewObject<UListDataObject_Collection>();
+		VolumeCategoryCollection->SetDataID(FName("VolumeCategoryCollection"));
+		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Volume")));
+
+		AudioTabCollection->AddChildListData(VolumeCategoryCollection);
+
+        // Test Item for category
+		{
+			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+			TestItem->SetDataID(FName("TestItem"));
+			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Item")));
+
+			VolumeCategoryCollection->AddChildListData(TestItem);
+		}
+	}
 
 	RegisteredOptionsTabCollections.Add(AudioTabCollection);
 }
