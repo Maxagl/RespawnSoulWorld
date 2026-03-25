@@ -1,6 +1,5 @@
 // Zhaobang Liu All Rights Reserved
 
-
 #include "Widgets/Options/ListEntries/Widget_ListEntry_Base.h"
 
 #include "CommonTextBlock.h"
@@ -16,8 +15,6 @@ void UWidget_ListEntry_Base::NativeOnListEntryWidgetHovered(bool bWasHovered)
 void UWidget_ListEntry_Base::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);
-
-    SetVisibility(ESlateVisibility::Visible);
 
 	OnOwningListDataObjectSet(CastChecked<UListDataObject_Base>(ListItemObject));
 }
@@ -54,7 +51,7 @@ void UWidget_ListEntry_Base::OnOwningListDataObjectSet(UListDataObject_Base* InO
 		CommonText_SettingDisplayName->SetText(InOwningListDataObject->GetDataDisplayName());
 	}
 
-    if (!InOwningListDataObject->OnListDataModified.IsBoundToObject(this))
+	if (!InOwningListDataObject->OnListDataModified.IsBoundToObject(this))
 	{
 		InOwningListDataObject->OnListDataModified.AddUObject(this, &ThisClass::OnOwningListDataObjectModified);
 	}
