@@ -7,16 +7,18 @@
 #include "RswGameUserSettings.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class RESPAWNSOULWORLD_API URswGameUserSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
 public:
+	URswGameUserSettings();
+
 	static URswGameUserSettings* Get();
 
-    //***** Gameplay Collection Tab ***** //
+	//***** Gameplay Collection Tab ***** //
 	UFUNCTION()
 	FString GetCurrentGameDifficulty() const { return CurrentGameDifficulty; }
 
@@ -24,7 +26,20 @@ public:
 	void SetCurrentGameDifficulty(const FString& InNewDifficulty) { CurrentGameDifficulty = InNewDifficulty; }
 	//***** Gameplay Collection Tab ***** //
 
+	//***** Audio Collection Tab ***** //
+	UFUNCTION()
+	float GetOverallVolume() const { return OverallVolume; }
+
+	UFUNCTION()
+	void SetOverallVolume(float InVolume);
+	//***** Audio Collection Tab ***** //
+
 private:
 	UPROPERTY(Config)
 	FString CurrentGameDifficulty;
+
+	//***** Audio Collection Tab ***** //
+	UPROPERTY(Config)
+	float OverallVolume;
+	//***** Audio Collection Tab ***** //
 };

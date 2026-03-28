@@ -3,6 +3,11 @@
 
 #include "FrontendSettings/RswGameUserSettings.h"
 
+URswGameUserSettings::URswGameUserSettings()
+	: OverallVolume(1.f)
+{
+}
+
 URswGameUserSettings* URswGameUserSettings::Get()
 {
 	if (GEngine)
@@ -11,4 +16,11 @@ URswGameUserSettings* URswGameUserSettings::Get()
 	}
 
 	return nullptr;
+}
+
+void URswGameUserSettings::SetOverallVolume(float InVolume)
+{
+	OverallVolume = InVolume;
+
+	// The actual logic for controlling the volume goes here
 }
