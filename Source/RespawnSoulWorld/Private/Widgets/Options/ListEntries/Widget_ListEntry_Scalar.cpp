@@ -9,6 +9,8 @@
 void UWidget_ListEntry_Scalar::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
+	AnalogSlider_SettingSlider->OnValueChanged.AddUniqueDynamic(this, &ThisClass::OnSliderValueChanged);
+	AnalogSlider_SettingSlider->OnMouseCaptureBegin.AddUniqueDynamic(this, &ThisClass::OnSliderMouseCaptureBegin);
 }
 
 void UWidget_ListEntry_Scalar::OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject)
@@ -31,6 +33,22 @@ void UWidget_ListEntry_Scalar::OnOwningListDataObjectModified(UListDataObject_Ba
 	if (CachedOwningScalarDataObject)
 	{
 		CommonNumeric_SettingValue->SetCurrentValue(CachedOwningScalarDataObject->GetCurrentValue());
-		AnalogSlider_SettingSlider->SetValue(CachedOwningScalarDataObject->GetCurrentValue());
+
+        // 这里其实有点重复的意味，因为Slider的值改变会直接修改数据对象的值，然后数据对象修改又会回调到这里来设置Slider的值。好在Slider的SetValue函数里有做重复值的判断，所以不会有死循环的问题
+		// 先留着吧
+        AnalogSlider_SettingSlider->SetValue(CachedOwningScalarDataObject->GetCurrentValue());
 	}
+}
+
+void UWidget_ListEntry_Scalar::OnSliderValueChanged(float Value)
+{
+	if (CachedOwningScalarDataObject)
+	{
+		CachedOwningScalarDataObject->SetCurrentValueFromSlider(Value);
+	}
+}
+
+void UWidget_ListEntry_Scalar::OnSliderMouseCaptureBegin()
+{
+	SelectThisEntryWidget();
 }

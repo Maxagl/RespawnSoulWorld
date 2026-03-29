@@ -11,7 +11,7 @@ class UCommonNumericTextBlock;
 
 class UListDataObject_Scalar;
 /**
- * 
+ *
  */
 UCLASS()
 class RESPAWNSOULWORLD_API UWidget_ListEntry_Scalar : public UWidget_ListEntry_Base
@@ -35,7 +35,13 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UAnalogSlider* AnalogSlider_SettingSlider;
 
-    UPROPERTY(Transient)
+	UPROPERTY(Transient)
 	UListDataObject_Scalar* CachedOwningScalarDataObject;
 	//***** Bound Widgets ***** //
+
+	UFUNCTION()
+	void OnSliderValueChanged(float Value);
+
+	UFUNCTION()
+	void OnSliderMouseCaptureBegin();
 };

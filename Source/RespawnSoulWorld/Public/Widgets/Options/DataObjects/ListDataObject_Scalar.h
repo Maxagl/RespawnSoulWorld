@@ -25,7 +25,8 @@ public:
 	static FCommonNumberFormattingOptions NoDecimal();
 	static FCommonNumberFormattingOptions WithDecimal(int32 NumFracDigit);
 
-    float GetCurrentValue() const;
+	float GetCurrentValue() const;
+	void  SetCurrentValueFromSlider(float InNewValue);
 
 private:
 	TRange<float>				   DisplayValueRange = TRange<float>(0.f, 1.f);
@@ -34,5 +35,10 @@ private:
 	ECommonNumericType			   DisplayNumericType = ECommonNumericType::Number;
 	FCommonNumberFormattingOptions NumberFormattingOptions;
 
-    float StringToFloat(const FString& InString) const;
+	float StringToFloat(const FString& InString) const;
+
+	//~ Begin UListDataObject_Base Interface
+	virtual bool CanResetBackToDefaultValue() const override;
+	virtual bool TryResetBackToDefaultValue() override;
+	//~ End UListDataObject_Base Interface
 };
