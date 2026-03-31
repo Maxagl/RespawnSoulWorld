@@ -5,6 +5,8 @@
 
 URswGameUserSettings::URswGameUserSettings()
 	: OverallVolume(1.f)
+	, MusicVolume(1.f)
+	, SoundFXVolume(1.f)
 {
 }
 
@@ -23,4 +25,14 @@ void URswGameUserSettings::SetOverallVolume(float InVolume)
 	OverallVolume = InVolume;
 
 	// The actual logic for controlling the volume goes here
+}
+
+void URswGameUserSettings::SetMusicVolume(float InVolume)
+{
+	MusicVolume = InVolume;
+}
+
+void URswGameUserSettings::SetSoundFXVolume(float InVolume)
+{
+	SoundFXVolume = InVolume;
 }

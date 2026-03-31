@@ -10,7 +10,6 @@
 #include "Widgets/Options/DataObjects/ListDataObject_Scalar.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
-
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(URswGameUserSettings, SetterOrGetterFuncName))
 
@@ -105,8 +104,8 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 	{
 		UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
 		TestItem->SetDataID(FName("TestItem"));
-		
-		TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));	
+
+		TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
 		TestItem->SetSoftDescriptionImage(UFrontendFunctionLibrary::GetOptionsSoftImageByTag(RswGameplayTags::Frontend_Image_TestImage));
 		TestItem->SetDescriptionRichText(FText::FromString(TEXT("The image to display can be specified in the project settings. It can be anything the developer assigned in there")));
 
@@ -122,7 +121,7 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 	AudioTabCollection->SetDataID(FName("AudioTabCollection"));
 	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("Audio")));
 
-    // Volume Category Collection 嵌套Collection
+	// Volume Category Collection 嵌套Collection
 	{
 		UListDataObject_Collection* VolumeCategoryCollection = NewObject<UListDataObject_Collection>();
 		VolumeCategoryCollection->SetDataID(FName("VolumeCategoryCollection"));
@@ -148,8 +147,44 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 
 			VolumeCategoryCollection->AddChildListData(OverallVolume);
 		}
+		// Music Volume
+		{
+			UListDataObject_Scalar* MusicVolume = NewObject<UListDataObject_Scalar>();
+			MusicVolume->SetDataID(FName("MusicVolume"));
+			MusicVolume->SetDataDisplayName(FText::FromString(TEXT("Music Volume")));
+			MusicVolume->SetDescriptionRichText(FText::FromString(TEXT("This is description for Music Volume")));
+			MusicVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			MusicVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			MusicVolume->SetSliderStepSize(0.01f);
+			MusicVolume->SetDefaultValueFromString(LexToString(1.f));
+			MusicVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			MusicVolume->SetNumberFormattingOptions(UListDataObject_Scalar::NoDecimal()); // No Decimal: 50%  //One Decimal: 50.5%
+			MusicVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetMusicVolume));
+			MusicVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetMusicVolume));
+			MusicVolume->SetShouldApplySettingsImmediately(true);
 
-        // Test Item
+			VolumeCategoryCollection->AddChildListData(MusicVolume);
+		}
+
+		// Sound FX Volume
+		{
+			UListDataObject_Scalar* SoundFXVolume = NewObject<UListDataObject_Scalar>();
+			SoundFXVolume->SetDataID(FName("SoundFXVolume"));
+			SoundFXVolume->SetDataDisplayName(FText::FromString(TEXT("Sound Effects Volume")));
+			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("This is description for Sound Effects Volume")));
+			SoundFXVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			SoundFXVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			SoundFXVolume->SetSliderStepSize(0.01f);
+			SoundFXVolume->SetDefaultValueFromString(LexToString(1.f));
+			SoundFXVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			SoundFXVolume->SetNumberFormattingOptions(UListDataObject_Scalar::NoDecimal()); // No Decimal: 50%  //One Decimal: 50.5%
+			SoundFXVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetSoundFXVolume));
+			SoundFXVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetSoundFXVolume));
+			SoundFXVolume->SetShouldApplySettingsImmediately(true);
+
+			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
+		}
+		// Test Item
 		{
 			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
 			TestItem->SetDataID(FName("TestItem"));
